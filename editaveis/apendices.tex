@@ -84,5 +84,48 @@ WHITESPACE : /[ \t\n\r,]+/
 
 COMMENT : /;.*/
 \end{lstlisting}
-    
+
+\chapter{Segundo Apêndice}
+\label{sec:docsexamples}
+
+
+\begin{lstlisting}[caption=Exemplo de documento FRED,label={lst:freddoc1}]
+Person (source=facebook) {
+    name : "Richard"
+    birth-date : 1997-12-08T12:32:45Z
+    age : 21
+    accomplishments : [
+        "High School"
+        "Chess champion"
+    ]
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Exemplo de documento JSON,label={lst:jsondoc1}]
+{ 
+    "Person" : {
+    "name" : "Richard",
+    "birth-date" : "1997-12-08T12:32:45Z",
+    "age": 21,
+    "accomplishments" : [
+        "High School",
+        "Chess champion"
+    ],
+    "source" : "facebook"
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Exemplo de documento XML,label={lst:xmldoc1}]
+<person source="facebook">
+    <name>Richard</name>
+    <birth-date>1997-12-08T12:32:45Z</birth-date>
+    <age>21</age>
+    <accomplishments>
+        <value>High School</value>
+        <value>Chess champion</value>
+    </accomplishments>
+</person>
+\end{lstlisting}
+
 \end{apendicesenv}

@@ -1,9 +1,371 @@
 \chapter[Resultados]{Resultados}
 
+Este capítulo aborda os resultados que foram alcançados no projeto.
+Neste trabalho foram definidos objetivos a serem cumpridos, um deles sendo especificar
+uma linguagem para troca e representação de dados. 
+
+Para cumprir com este objetivo, na Seção \ref{sec:solution} foi especificado 
+a linguagem de maneira formal.
+
+No decorrer da seção de resultados será explorado como os outros objetivos foram
+desenvolvidos.
+
 \section{Implementação do FRED em Haskell}
+
+Haskell é uma linguagem puramente funcional. E como exposto anteriormente em
+\ref{sec:sintatic} esse tipo de ambiente favorece a utilização 
+de \textit{Parsers Combinators}.
+
+A implementação utilizou a biblioteca 
+\textit{parsec\footnote{https://hackage.haskell.org/package/parsec}}
+pois ela é bem estabelecida e possui boa documentação.
+
+A partir da gramática formalizada para a linguagem FRED e utilizando os
+conceitos de \textit{parsers combinators} foram criadas funções para
+fazer o processo de \textit{parsing}. Estas funções tinham relação
+direta com os não terminais da gramática.
+
+\begin{lstlisting}[caption=Parser para o não terminal value,label={lst:valuehaskell}]
+value :: Parser FredValue
+value = tagged <|> (NonTag <$> atom)
+\end{lstlisting}
+
+Por exemplo o não terminal \textbf{value} do Apêndice \ref{sec:fredgrammar}.
+Foi mapeado na função \ref{lst:valuehaskell}. 
+
+O tipo dessa função mostra que ele retorna um \textbf{FredValue}. 
+Este tipo representa um valor FRED em haskell utilizando um 
+\textit{Union Type} definido no módulo \textbf{Value.hs} 
+mostrado no código \ref{lst:fredvaluehaskell}.
+
+\begin{lstlisting}[caption=Definição do tipo FredValue,label={lst:fredvaluehaskell}]
+data FredValue =
+    Tag (String, [(String, FredAtom)], FredAtom) 
+    | NonTag FredAtom
+\end{lstlisting}
+
+Um \textbf{FredValue} sempre é associado à um \textbf{FredAtom}. Este
+define os tipos que a linguagem FRED possui e está definido no módulo \textbf{Value.hs}
+mostrado no código \ref{lst:fredatomhaskell}
+
+\begin{lstlisting}[caption=Definição do tipo FredAtom,label={lst:fredatomhaskell}]
+data FredAtom =
+    B Bool
+    | S String
+    | A [FredAtom]
+    | O [(String, FredValue)]
+    | N (Either Integer Float)
+    | Symbol String
+    | Blob B.ByteString
+    | LDate Day
+    | LTime TimeOfDay
+    | LDateTime LocalTime
+    | DateTime ZonedTime
+    | NULL
+\end{lstlisting}
+
+Com esses tipos a implementação segue criando os mini parsers e combinandos baseado na gramática.
+Vale notar que foram feitas modularizações para facilitar a manutenabilidade do projeto.
+O projeto está dividido em 5 arquivos principais. 
+
+\begin{itemize}
+    \item \textbf{Fred.hs}: Define o módulo principal com as principais funções e expõe a 
+    função parse que inicia o processo de parsing.
+    \item \textbf{Value.hs}: Define os tipos que representam um documento FRED em Haskell.
+    \item \textbf{Number.hs}: Possui as funções auxiliares para construir os parsers para
+    representações numéricas em FRED.
+    \item \textbf{String.hs}: Possui as funções auxiliares para construir os parsers para
+    representações de texto em FRED.
+    \item \textbf{DateTime.hs}: Possui as funções auxiliares para construir os parsers para
+    representações Data e Hora em FRED.
+\end{itemize}
+
+A implementação do FRED em Haskell está atualmente disponível como \textit{package candidate} no 
+\textit{Hackage\footnote{Gerenciador de pacotes da comunidade Haskell}} e foi documentada utilizando 
+\textit{Haddock\footnote{Ferramenta para gerar documentação de códigos Haskell}}.
 
 \section{Implementação do FRED em JavaScript}
 
+Em JavaScript a implementação da linguagem FRED foi feita utilizando a biblioteca 
+Chevrotain\footnote{https://github.com/SAP/chevrotain}. Essa biblioteca foi escolhida
+devido a dois fatores, performance e documentação.
+
+Segundo a documentação da biblioteca, a gramática implementada é do tipo LL(k). Também é bem definido
+a separação entre analisador léxico, sintático e semântico. Isso foi refletido na arquitetura
+do parser. 
+
+O módulo \textit{lexer} é baseado em expressões regulares, seu objetivo é definir e 
+capturar os tokens a partir da entrada. Consiste de várias expressões regulares
+que representam os terminais da gramática. Por exemplo a representação do tipo data em FRED pode
+ser capturada como um token utilizando o código em \ref{lst:tokendata}
+
+\begin{lstlisting}[caption=Definição do token para data,label={lst:tokendata}]
+const DateFormat = createToken({
+    name: "DateFormat",
+    pattern: /\d{4}-\d{2}-\d{2}/
+})
+\end{lstlisting}
+
+O outro módulo essencial tem o papel de analisar a sintática. A biblioteca utiliza uma 
+\textit{Domain Specific Language (DSL)} para especificar a gramática e funciona analisando
+um vetor de token gerado pelo módulo de análise léxica. As regras seguem a gramática especificada
+em \ref{sec:fredgrammar}. Como exemplo temos o não terminal \textbf{value} no código \ref{lst:valuejs}
+
+\begin{lstlisting}[caption=Definição da regra value em JavaScript,label={lst:valuejs}]
+$.RULE("value", () => {
+    $.OR([
+        { ALT: () => $.SUBRULE($.tagged) },
+        { ALT: () => $.SUBRULE($.atom) }
+    ])
+})
+\end{lstlisting}
+
+Com a definição das regras sintáticas é necessário definir a semântica, isto é 
+como transformar essa entrada em uma estrutura de dados em JavaScript. 
+
+A biblioteca Chevrotain recomenda a separação entre a análise sintática e a semântica. Para tal
+a partir da análise sintática a biblioteca retorna uma árvore sintática concreta. E permite a partir 
+dessa árvore a construção de uma estrutura de dados nova.
+
+Detalhadamente é necessário percorrer essa árvore e executar ações nos nós para construir essa estrutura.
+Para esse processo a biblioteca utiliza o padrão \textit{Visitor} onde existe um método referente
+a cada regra e a semântica está determinada nestes.
+
+Na implementação essa classe está no arquivo \textbf{visitor.js} e um exemplo de método 
+está no código \ref{lst:semanticjs}.
+
+\begin{lstlisting}[caption=Exemplo de ação semântica,label={lst:semanticjs}]
+tagged(ctx) {
+    if (ctx.tag) {
+        return this.visit(ctx.tag)
+    }
+    else {
+        return this.visit(ctx.voidTag);
+    }
+}
+\end{lstlisting}
+
+Por fim no arquivo \textbf{index.js} é exportado uma função que inicia o processo de 
+parsing utilizando dos módulos anteriores.
+
+Essa implementação está publicada no npm\footnote{Node Package Manager} e possui uma
+documentação simples no seu README.
+
 \section{Suíte de Testes do FRED}
 
-\section{Métricas comparativas com JSON}
+Dado a complexidade tanto de especificar como de implementar uma linguagem, nem sempre 
+as implementações estão de acordo com a especificação. Para garantir isto foi criado
+uma suíte de testes da linguagem FRED, inspirada nas suítes de teste
+para a linguagem TOML\footnote{https://github.com/BurntSushi/toml-test} 
+e Sass\footnote{https://github.com/sass/sass-spec}.
+
+Essa suíte determina dois grupos de testes. Os que testam documentos FRED inválidos
+e os que testam documentos FRED válidos.
+
+\begin{itemize}
+    \item Os testes inválidos consistem de arquivos FRED com valores inválidos para a linguagem
+    e as implementações devem retornar erro quando tentar analisar esse documento.
+    \item Os testes válidos consistem de arquivos de entrada com FRED válido e arquivos
+    de sáida do tipo JSON, esses arquivos JSON estão num formato específico. 
+\end{itemize}
+
+Os arquivos de saída do tipo JSON precisam representar o documento de entrada FRED de maneira
+clara e específica pois as implementações irão fazer o \textit{parsing} desta entrada e transformar
+num JSON de acordo com esse formato.
+
+Portanto especificar esse formato é extremamente importante. Um valor FRED
+representado em JSON segue o padrão.
+
+Valores FRED são representados como um objeto JSON com três atributos, tag, meta, value.
+Tag tem seu valor representado como string JSON, meta é um objeto JSON onde a chave 
+representa o nome do atributo FRED e o valor representa o valor do metadado FRED.
+E value é representdo como string JSON para todos os valores FRED exceto Array e Objeto.
+
+Exemplo de documento FRED e respectiva representação em JSON, nos códigos \ref{lst:testfred}
+e \ref{lst:testjson}.
+
+\begin{lstlisting}[caption=Exemplo de FRED ,label={lst:testfred}]
+Person (source=facebook) {
+    name : "Richard"
+    birth-date : 1997-12-08T12:32:45Z
+    age : 21
+    accomplishments : [
+        "high school"
+        "Chess champion"
+    ]
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=Exemplo de JSON no formato de testes ,label={lst:testjson}]
+{
+    "tag" : "Person",
+    "value" : {
+        "name" : {
+            "tag" : null,
+            "value" : "Richard", 
+            "meta" : null
+        },
+        "birth-date" : {
+            "tag" : null,
+            "value" : "1997-12-08T12:32:45Z", 
+            "meta" : null
+        },
+        "age" : {
+            "tag" : null,
+            "value" : "21", 
+            "meta" : null
+        },
+        "accomplishments" : [
+            "high school",
+            "Chess champion"
+        ]
+    },
+    "meta" : {
+        "source" : "facebook"
+    }
+}
+\end{lstlisting}
+    
+Definida essa especificação, durante o trabalho foi criado um repositório onde foi
+cosntruídos vários casos de testes seguindo a especificação.
+
+O fluxo base para testar as implementações com esta suíte de testes é:
+
+\begin{itemize}
+    \item Importar repositório de testes
+    \item Ler os testes dos arquivos e criar casos de teste dinamicamente
+    \item Executar os testes
+\end{itemize}
+
+Este fluxo foi implementado tanto em Haskell como em JavaScript. 
+Em Haskell foi utilizado a biblioteca hspec e em JavaScript a biblioteca jest.
+Ambas possuem api muito parecida e criar os testes dinamicamente seguem um algoritmo
+parecido.
+
+A suíte de testes está descrita no 
+repositório \url{https://github.com/fred-format/fred-test}
+
+\section{Análise e Discussão da linguagem FRED}
+
+A linguagem FRED foi construída pensando tanto na facilidade para ler e escrever, como na
+simplicidade para construir \textit{parsers}. Também possui abstrações que permitem 
+mais significado semântico aos dados e possibilita validações. 
+
+O FRED foi desenvolvido pensando em alguns casos de uso. Inicialmente a linguagem
+tem o uso principal para troca de dados e comunicação entre sistemas, também pode
+ser usado para arquivos de configuração. 
+
+Outro uso foi descoberto durante o desenvolvimento da linguagem. 
+Percebeu-se a facilidade de representar árvores sintáticas em FRED.
+
+Nessa seção serão discutidas as principais características da linguagem. E também como ela 
+se relaciona com outros formatos, especialmente JSON e XML.
+
+\subsection{Características Principais}
+
+A linguagem FRED possui especialmente duas funcionalidades que permitem
+a extensão e adicionar mais significado semântico aos dados. As \textit{tags}
+e os metadados.
+
+\begin{lstlisting}[caption=Exemplo de Valor FRED com Tag e metadado,label={lst:tagexample}]
+Person (source=facebook) {
+    name : "Richard"
+    birth-date : 1997-12-08T12:32:45Z
+    age : 21
+    accomplishments : [
+        "High School"
+        "Chess champion"
+    ]
+}
+\end{lstlisting}
+    
+Na linguagem existem valores com tags e metadados, esses valores consistem de um nome
+e atributos associados a um outro valor do FRED. Exemplo de documento FRED com tag e metadado 
+no Código \ref{lst:tagexample}.
+
+Também existe uma notação para tags não associadas a nenhum valor. Isto permite representar
+XML mais facilmente.
+
+Essas tags junto com uma futura especificação de \textit{schemas} permite implementações
+futuras do FRED validar os dados.
+
+Existem também características que permitem escrever FRED com facilidade. As vírgulas
+em FRED são consideradas espaço em branco e isso permite por exemplo escrever objetos
+e arrays com maior facilidade. Também permite dentro dos objetos escrever as chaves sem
+aspas.
+
+
+\subsection{Comparação com JSON e XML}
+
+A linguagem FRED possui uma sintaxe inspirada em JSON, porém também permite tags que lembram
+XML. Portanto comparar exemplos de documentos representando os mesmos dados 
+nas três linguagens é essencial.
+
+\begin{lstlisting}[caption=Exemplo de documento FRED,label={lst:freddoc}]
+Person (source=facebook) {
+    name : "Richard"
+    birth-date : 1997-12-08T12:32:45Z
+    age : 21
+    accomplishments : [
+        "High School"
+        "Chess champion"
+    ]
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Exemplo de documento JSON,label={lst:jsondoc}]
+{ 
+    "Person" : {
+        "name" : "Richard",
+        "birth-date" : "1997-12-08T12:32:45Z",
+        "age": 21,
+        "accomplishments" : [
+            "High School",
+            "Chess champion"
+        ],
+        "source" : "facebook"
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Exemplo de documento XML,label={lst:xmldoc}]
+<person source="facebook">
+    <name>Richard</name>
+    <birth-date>1997-12-08T12:32:45Z</birth-date>
+    <age>21</age>
+    <accomplishments>
+        <value>High School</value>
+        <value>Chess champion</value>
+    </accomplishments>
+</person>
+\end{lstlisting}
+
+Os exemplos \ref{lst:freddoc}, \ref{lst:jsondoc}, \ref{lst:xmldoc} representam o mesmo dado.
+Sintáticamente o FRED e o JSON se assemelham porém o FRED possui uma notação especial
+relacionada as tags e metadados. O XML entretanto tem uma sintaxe totalmente diferente
+pois é baseado no SGML que é uma linguagem de marcação.
+
+\begin{table}[h]
+    \centering
+	\caption{Tabela com métricas sobre a linguagem FRED, JSON e XML}
+	\label{tbl:metricslangs}
+
+    \begin{tabular}{cccc}
+		\toprule
+		\textbf{Arquivo} & \textbf{LOC (\textit{Lines of Code})} & \textbf{Tamanho do arquivo} & 
+		\textbf{Tamanho zip} \\
+		\midrule
+		\ref{lst:freddoc} & 9 & 22 kb & 10 kB\\
+		\ref{lst:jsondoc} & 12 & 13 kb & 10 kB\\
+        \ref{lst:xmldoc}  & 9 & 22 kb & 10 kB\\
+        \ref{lst:freddoc1} & 9 & 22 kb & 10 kB\\
+		\ref{lst:jsondoc1} & 12 & 13 kb & 10 kB\\
+		\ref{lst:xmldoc1} & 9 & 22 kb & 10 kB\\
+		\bottomrule
+    \end{tabular}
+\end{table}
+
+As linguagens foram comparadas utilizando algumas métricas calculadas a partir de
+documentos diversos, mostrado na Tabela \ref{tbl:metricslangs}. 
+Os documentos utilizados para retirar as métricas estão no Apêndice \ref{sec:docsexamples}.
