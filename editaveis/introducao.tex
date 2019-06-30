@@ -1,19 +1,51 @@
 \chapter[Introdução]{Introdução}
 
+Na computação os formatos utilizados para representar dados
+possuem muita importância pois a maneira em que eles são organizados
+influem tanto na leitura e escrita por humanos como também 
+na interpretação pelos computadores.
+
+Com o advento da internet a comunicação entre sistemas aumentou.
+Por isso foi necessário a criação de formatos padronizados para representar
+os dados comunicados. Dentre estes destaca-se XML e JSON.
+
+O XML foi concebido a partir de uma linguagem de marcação chamada SGML.
+Um de seus objetivos é ser de fácil utilização na internet \cite{XML}.
+
+O formato JSON foi criado com base na representação de objetos 
+da linguagem JavaScript, possui uma sintaxe simples e tem como
+objetivo ser fácil tanto para humanos ler e escrever como
+para máquinas interpretar \cite{ecma404}.
+
+Nesse projeto é especificado o FRED (\textit{Flexible REpresentation of Data}), 
+um formato para representação e troca de dados. Este formato possui uma sintaxe
+inspirada no JSON porém incrementa o modelo de dados utilizando algumas 
+abstrações que lembram o XML.
+
+Além disso o FRED possui um modelo de dados um pouco mais complexo que JSON,
+permitindo por exemplo dados sobre data e hora, além disso mais tipos estão
+definidos na especificação.
+
+Este trabalho propõe especificar e implementar a linguagem FRED, para tal
+um estudo sobre linguagens formais e compiladores foi feito com o objetivo
+de fornecer a base teórica necessária.
+
 \section{Objetivos}
 \label{sec:objective}
 
 \subsection{Objetivo Geral}
 
-O objetivo principal deste trabalho é construir uma linguagem para troca de dados
-com foco em prover significado semântico aos dados.
+O objetivo principal deste trabalho é a construção de uma linguagem para
+representação e troca de dados, com base na sintaxe de JSON e
+utilizando de alguns conceitos do XML para expandir as abstrações 
+desta nova linguagem.
 
 \subsection{Objetivos Específicos}
 
 \begin{itemize}
     \item Especificar a linguagem de maneira formal.
     \item Implementar a linguagem com base na especificação.
-    \item Analisar a linguagem implementada.
+    \item Analisar e discutir a linguagem implementada.
 \end{itemize}
 
 \section{Organização do trabalho}
@@ -22,7 +54,8 @@ Este trabalho está organizado em três partes principais:
 
 \begin{itemize}
     \item \textbf{Referencial Teórico:} Esta seção trata da fundamentação teórica
-    utilizada no trabalho e tem o objetivo de fornecer a base para entender o projeto.
+    utilizada no trabalho e tem o objetivo de fornecer a base para o desenvolvimento 
+    do projeto.
     \item \textbf{Metodologia:} Esta seção define como será feito o trabalho e também
     o escopo do projeto.
     \item \textbf{Resultados:} Esta seção aborda os resultados que foram alcançados no decorrer

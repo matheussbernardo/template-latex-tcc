@@ -1,1 +1,51 @@
 \chapter[Conclusão]{Conclusão}
+
+O projeto consistiu em especificar e implementar uma linguagem para troca de dados.
+A especificação foi construída com o objetivo de facilitar as implementações.
+Para tal, a gramática permite desenvolver parsers com técnicas simples como 
+LL(1) e descida recursiva.
+
+A primeira implementação foi feita em Haskell e utiliza a técnica
+de \textit{parsers combinators}. Neste analisador a separação entre léxico, sintático
+e semântico não ficou clara. Entretanto o código foi modularizado por meio
+das funções e módulos que estão associados a partes da linguagem.
+
+Já o segundo analisador foi escrito em JavaScript. Esta implementação
+utilizou uma biblioteca que constrói parsers LL(k). A arquitetura foi dividida 
+de maneira clara entre o analisador léxico, sintático e semântico, pois
+a biblioteca também separa essas responsabilidades.
+
+Com as implementações desenvolvidas foi necessário uma forma de verificar se estas
+condizem com a especificação. Para tanto, uma suíte de testes agnóstica a linguagem
+de implementação foi desenvolvida. Ela consiste de dois conjuntos de testes
+que verificam documentos FRED válidos e inválidos de acordo com a especificação.
+
+As implementações portanto utilizam essa suíte e verificam se estão de 
+acordo com a especificação.
+
+Durante o desenvolvimento do projeto foi realizado uma análise a 
+respeito da linguagem FRED e suas características. Também foi realizado
+uma comparação simples com outros formatos correlatos. Entretanto,
+não é posível afirmar que as características diferenciais melhoram
+a usabilidade ou a legibilidade. Necessitando desenvolver melhor o
+ecossistema e realizar estudos comparativos mais formais.
+
+A linguagem FRED foi especificada e implementada em dois ambientes,
+entretanto é necessário mais estudos sobre as vantagens e desvantagens
+de utilizá-la e também desenvolver projetos utilizando FRED.
+
+\section{Trabalhos Futuros}
+
+Como sequência a este projeto, percebe-se a necessidade de
+um estudo comparativo entre as linguagens correlatas, especialmente JSON e XML.
+
+Não era parte do projeto fazer esta comparação de maneira formal. Entretanto,
+este estudo pode fornecer informações úteis para futuras evoluções da linguagem
+e do seu ecossistema.
+
+Também para melhorar o ecossistema do FRED, é necessário estudos
+sobre verificação e validação. E possivelmente definir uma especificação 
+de um formato para \textit{schemas}.
+
+Outro trabalho futuro é experimentar a linguagem em diferentes casos de uso
+com o objetivo de entender onde existem vantagens e desvantagens no seu uso.

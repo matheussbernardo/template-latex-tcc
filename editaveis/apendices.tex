@@ -2,10 +2,10 @@
 
 \partapendices
 
-\chapter{Primeiro Apêndice}
+\chapter{Gramática da linguagem FRED}
 \label{sec:fredgrammar}
 
-\begin{lstlisting}[caption=Gramática do FRED,label={lst:fredgrammar}]
+\begin{lstlisting}[caption=Gramática em notação LARK para linguagem FRED,label={lst:fredgrammar}]
 document : stream
             | value
 
@@ -34,7 +34,7 @@ object : "{" pair* "}"
 
 pair : name ":" value
 
-array : "[" atom* "]"
+array : "[" value* "]"
 
 bool : "true" | "false"
 
@@ -58,36 +58,10 @@ blob : "#" BLOB_LITERAL
 name : VARIABLE
         | QUOTED_VARIABLE
 
-VARIABLE : /[^#\"`$:;{}\[\]=\(\)\t\r\n ,0-9]{1}[^#\"`$:;{}\[\]=\(\)\t\r\n ,]*/
-
-QUOTED_VARIABLE : /`(?:[^\\`]|\\(?:[bfnrtv`\\/]|x[0-9a-fA-F]|u[0-9a-fA-F]{4}|U[0-9a-fA-F]))*`/
-
-STRING_LITERAL : /"(?:[^\\"]|\\(?:[bfnrtv"\\/]|x[0-9a-fA-F]|u[0-9a-fA-F]{4}|U[0-9a-fA-F]))*"/
-
-BLOB_LITERAL : /"(?:[^\\"\u\U]|\\(?:[bfnrtv"\\/]|x[0-9a-fA-F]))*"/
-
-NUMBER_LITERAL : /-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?/
-
-HEX_LITERAL : /0x[0-9a-fA-F]{1}([0-9a-fA-F]{1}|_[0-9a-fA-F]{1})*/
-
-OCT_LITERAL : /0o[0-8]{1}([0-8]{1}|_[0-8]{1})*/
-
-BIN_LITERAL : /0b[01]{1}([01]{1}|_[01]{1})*/
-
-DATE_FORMAT : /\d{4}-\d{2}-\d{2}/
-
-TIME_FORMAT : /\d{2}:\d{2}:\d{2}(\.\d+)?/
-
-TIME_OFFSET : /Z|[+-]\d{2}:\d{2}/
-
-WHITESPACE : /[ \t\n\r,]+/
-
-COMMENT : /;.*/
 \end{lstlisting}
 
-\chapter{Segundo Apêndice}
+\chapter{Documentos FRED, JSON e XML utilizados para comparação}
 \label{sec:docsexamples}
-
 
 \begin{lstlisting}[caption=Exemplo de documento FRED,label={lst:freddoc1}]
 Person (source=facebook) {

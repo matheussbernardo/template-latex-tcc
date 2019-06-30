@@ -7,13 +7,12 @@ uma linguagem para troca e representação de dados.
 Para cumprir com este objetivo, na Seção \ref{sec:solution} foi especificado 
 a linguagem de maneira formal.
 
-No decorrer da seção de resultados será explorado como os outros objetivos foram
-desenvolvidos.
+No decorrer da seção de resultados será explorado os outros objetivos do projeto.
 
 \section{Implementação do FRED em Haskell}
 
 Haskell é uma linguagem puramente funcional. E como exposto anteriormente em
-\ref{sec:sintatic} esse tipo de ambiente favorece a utilização 
+\ref{sec:sintatic} esse tipo de ambiente utiliza fortemente a técnica 
 de \textit{Parsers Combinators}.
 
 A implementação utilizou a biblioteca 
@@ -23,7 +22,7 @@ pois ela é bem estabelecida e possui boa documentação.
 A partir da gramática formalizada para a linguagem FRED e utilizando os
 conceitos de \textit{parsers combinators} foram criadas funções para
 fazer o processo de \textit{parsing}. Estas funções tinham relação
-direta com os não terminais da gramática.
+direta especialmente com os não terminais da gramática.
 
 \begin{lstlisting}[caption=Parser para o não terminal value,label={lst:valuehaskell}]
 value :: Parser FredValue
@@ -31,7 +30,7 @@ value = tagged <|> (NonTag <$> atom)
 \end{lstlisting}
 
 Por exemplo o não terminal \textbf{value} do Apêndice \ref{sec:fredgrammar}.
-Foi mapeado na função \ref{lst:valuehaskell}. 
+Foi mapeado na função descrita no Código \ref{lst:valuehaskell}. 
 
 O tipo dessa função mostra que ele retorna um \textbf{FredValue}. 
 Este tipo representa um valor FRED em haskell utilizando um 
