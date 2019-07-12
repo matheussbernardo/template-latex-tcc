@@ -17,7 +17,7 @@ value : tagged
 tagged : name [attrs] atom
         | "(" name attr* ")" 
 
-attrs : "(" meta_item* ")"
+attrs : "(" attr* ")"
 
 attr : name "=" atom
 
@@ -48,7 +48,7 @@ number : NUMBER_LITERAL
 date_time : date
             | TIME_FORMAT
 
-date : DATE_FORMAT [ ("_" | "T") TIME_FORMAT TIME_OFFSET]
+date : DATE_FORMAT [ ("_" | "T") TIME_FORMAT [ TIME_OFFSET ] ]
 
 string : STRING_LITERAL
         | blob
@@ -58,48 +58,52 @@ blob : "#" BLOB_LITERAL
 name : VARIABLE
         | QUOTED_VARIABLE
 
+VARIABLE : /[^#\"`$:;{}\[\]=\(\)\t\r\n ,0-9]{1}[^#\"`$:;{}\[\]=\(\)\t\r\n ,]*/
+
+QUOTED_VARIABLE : /`(?:[^\\`]|\\(?:[bfnrtv`\\/]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}))*`/
+
+STRING_LITERAL : /"(?:[^\\"]|\\(?:[bfnrtv"\\/]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}))*"/
+
+BLOB_LITERAL : /"(?:[^\\"\u\U]|\\(?:[bfnrtv"\\/]|x[0-9a-fA-F]{2}))*"/
+
+NUMBER_LITERAL : /-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?/
+
+HEX_LITERAL : /0x[0-9a-fA-F]{1}([0-9a-fA-F]{1}|_[0-9a-fA-F]{1})*/
+
+OCT_LITERAL : /0o[0-8]{1}([0-8]{1}|_[0-8]{1})*/
+
+BIN_LITERAL : /0b[01]{1}([01]{1}|_[01]{1})*/
+
+DATE_FORMAT : /\d{4}-\d{2}-\d{2}/
+
+TIME_FORMAT : /\d{2}:\d{2}:\d{2}(\.\d+)?/
+
+TIME_OFFSET : /Z|[+-]\d{2}:\d{2}/
+
+WHITESPACE : /[ \t\n\r,]+/
+
+COMMENT : /;.*/
 \end{lstlisting}
 
 \chapter{Documentos FRED, JSON e XML utilizados para comparação}
 \label{sec:docsexamples}
 
-\begin{lstlisting}[caption=Exemplo de documento FRED,label={lst:freddoc1}]
-Person (source=facebook) {
-    name : "Richard"
-    birth-date : 1997-12-08T12:32:45Z
-    age : 21
-    accomplishments : [
-        "High School"
-        "Chess champion"
-    ]
-}
-\end{lstlisting}
+\lstinputlisting[caption=Exemplo de documeto XML,label={lst:personxml}]{codigos/person.xml}
 
-\begin{lstlisting}[caption=Exemplo de documento JSON,label={lst:jsondoc1}]
-{ 
-    "Person" : {
-    "name" : "Richard",
-    "birth-date" : "1997-12-08T12:32:45Z",
-    "age": 21,
-    "accomplishments" : [
-        "High School",
-        "Chess champion"
-    ],
-    "source" : "facebook"
-    }
-}
-\end{lstlisting}
+\lstinputlisting[caption=Exemplo de documeto JSON,label={lst:personjson}]{codigos/person.json}
 
-\begin{lstlisting}[caption=Exemplo de documento XML,label={lst:xmldoc1}]
-<person source="facebook">
-    <name>Richard</name>
-    <birth-date>1997-12-08T12:32:45Z</birth-date>
-    <age>21</age>
-    <accomplishments>
-        <value>High School</value>
-        <value>Chess champion</value>
-    </accomplishments>
-</person>
-\end{lstlisting}
+\lstinputlisting[caption=Exemplo de documeto FRED,label={lst:personfred}]{codigos/person.fred}
+
+\lstinputlisting[caption=Exemplo de documeto XML,label={lst:divxml}]{codigos/div.xml}
+
+\lstinputlisting[caption=Exemplo de documeto JSON,label={lst:divjson}]{codigos/div.json}
+
+\lstinputlisting[caption=Exemplo de documeto FRED,label={lst:divfred}]{codigos/div.fred}
+
+\lstinputlisting[caption=Exemplo de documeto XML,label={lst:packagexml}]{codigos/package.xml}
+
+\lstinputlisting[caption=Exemplo de documeto JSON,label={lst:packagejson}]{codigos/package.json}
+
+\lstinputlisting[caption=Exemplo de documeto FRED,label={lst:packagefred}]{codigos/package.fred}
 
 \end{apendicesenv}

@@ -3,52 +3,65 @@
 \section{Linguagens Formais}
 \label{sec:languages}
 
-
-Dentro do inglês letras, palavras e sentenças são entidades distintas.
+Na maior parte das linguagens naturais (ex. português, inglês, etc)
+letras, palavras e sentenças são entidades distintas.
 Também é verdade que existem agrupamentos, isto é, conjuntos de letras
 formam palavras e conjuntos de palavras formam sentenças. Contudo, 
 nem todos esses conjuntos são válidos \cite{cohen1986}.
 
 Esse tipo de relação também é válido para linguagens em computadores.
 Por exemplo, na linguagem de programação \textit{C}, conjuntos de caracteres formam comandos
-e um conjunto desses comandos formam programas e estes também podem ser válidos ou não \cite{cohen1986}.
+e um conjunto desses comandos formam programas. Estes também podem ser válidos ou não.
 
 O estudo de linguagens formais busca entender como funcionam as linguagens de maneira unificada 
-e utilizando regras claras. Isto implica em definir sem ambiguidades, o que é uma linguagem e
-como validar uma linguagem. O formalismo também pressupõe que esta área não busca
-compreender a comunicação ou a interpretação subjetiva de textos \cite{cohen1986}.
+e utilizando regras bem definidas. Isto implica em definir sem ambiguidades, o que é uma linguagem e
+como validar uma linguagem além de propor algoritmos específicos para realizar esta análise. 
+O formalismo também pressupõe que esta área não busca compreender a comunicação ou a interpretação 
+subjetiva de textos.
 
-Segundo \citeonline{cohen1986}, para definir uma linguagem de maneira formal 
-existe um conjunto finito de unidades fundamentais chamdo alfabeto. Essas unidades
-são chamadas de símbolos.
+Para definirmos uma linguagem de maneira formal, existem algumas abstrações.
+Símbolos são as unidades fundamentais e um conjunto de símbolos válidos é um alfabeto.
 
 Uma sequência de símbolos é chamado \textit{string} e um conjunto específico dessas \textit{strings} 
-que utiliza símbolos do alfabeto forma uma linguagem. Também seria possível existir uma \textit{string} vazia. 
+consideradas bem formadas forma uma linguagem. Deste modo, podemos definir uma linguagem 
+como um conjunto contável de \textit{strings} que usa símbolos de um alfabeto especificado. 
+Usando essa definição o português é definido como o conjunto de todos os textos 
+válidos em português \cite{cohen1986}.
 
-Já segundo \citeonline{aho2006}, uma linguagem é qualquer conjunto de \textit{strings} contável
-que usa símbolos de um alfabeto especificado.
+Entretanto, esse conjunto é infinito e portanto para definir esta linguagem de maneira precisa
+é necessário utilizar as regras gramáticais e definir a linguagem de maneira
+generativa utilizando uma descrição finita de regras. 
 
-Também segundo \citeonline{aho2006}, é possível fazer algumas operações com estas linguagens.
-Por exemplo, dado duas linguagens em que L representa o conjunto de letras do inglês 
-e D o conjunto de dígitos, podemos definir as operações da seguinte maneira:
+Utilizando essa estratégia frases em português que não fazem sentido, mas que estão gramaticalmente
+corretas. Por exemplo, "Os dinossauros tem sua ética definida na tangente do verbo", são válidas para
+a linguagem, visto que linguagens formais não estudam o significado dos textos.
+
+Para compor novas linguagens, a definição permite construir linguagens complexas a partir de
+outras linguagens mais simples. Para tal, é possível fazer algumas operações em linguagens
+e gerar outras mais abrangentes.
+
+Por exemplo, dado duas linguagens: L definida por duas palavras \textbf{aa} e \textbf{bb} e
+D o conjunto de dígitos de \textbf{0} a \textbf{9}. Podemos definir as operações nessas 
+linguagens da seguinte maneira:
 
 \begin{itemize} 
-    \item União ente linguagens é similar a operação em conjuntos, isto é a união de L e D significa
-    todas as letras do alfabeto da linguagem L mais os dígitos do alfabeto da linguagem D.
-    \item Concatenação de linguagens significa uma operação onde todas as cadeias de caracteres são
-    formadas pegando todas as \textit{strings} da primeira linguagem e todas as \textit{strings} 
-    da segunda linguagem em todas as combinações possíveis, por exemplo a concatenação de L com D
-    significa uma outra linguagem que consiste do conjunto de \textit{strings} de dois símbolos, o primeiro
-    da linguagem L e o subsequente da linguagem D.
-    \item A operação \textit{kleene closure} de uma linguagem é o conjunto de \textit{strings} criadas concatenando a linguagem zero 
-    ou mais vezes, por exemplo aplicar esta operação na linguagem L significa que palavras com zero ou mais letras
-    são válidas na nova linguagem.
-    \item A operação \textit{postive closure} de uma linguagem é o conjunto de \textit{strings} criadas concatenando a linguagem uma 
-    ou mais vezes, ao aplicar esta operação na linguagem L palavras com uma ou mais letras do alfabeto L são aceitas
-    na nova linguagem.
+    \item União entre linguagens é similar a operação em conjuntos, isto é a união de L e D significa
+    um novo conjunto composto pelas palavras da linguagem L mais os dígitos da linguagem D, isto é
+    o conjunto com \textbf{aa}, \textbf{bb} e os dígitos de \textbf{0} a \textbf{9}.
+    \item Concatenação de linguagens é uma operação similar ao produto cartesiano em conjuntos,
+    isto é, o novo conjunto é formado utilizando todas as palavras de L e combinando com as
+    palavras da linguagem D. No caso as \textit{strings} da nova linguagem possuem três caracteres
+    onde os dois primeiros pertencem ao alfabeto de L e o terceiro ao alfabeto de D, por exemplo
+    \textit{aa4}.
+    \item A operação \textit{kleene closure} em uma linguagem consiste no conjunto de \textit{strings} criadas 
+    concatenando a linguagem zero ou mais vezes, por exemplo aplicar esta operação na 
+    linguagem L significa construir uma nova linguagem onde é válido \textit{strings} compostas por
+    \textbf{aa} e \textbf{bb} de maneira concatenada, por exemplo \textit{aabbaaaa}.
 \end{itemize}
 
-Todo esse formalismo permitiu o desenvolvimento de linguagens que podem ser interpretadas por computadores.
+Existem outras operações mais complexas baseadas em recursão que serão discutidas adiante.
+
+Todo esse formalismo permitiu o desenvolvimento de técnicas para interpretar linguagens por meio de computadores.
 Um exemplo disso é a área de compiladores. Duas partes fundamentais serão exploradas nas próximas
 seções, análise léxica e análise sintática, estas utilizam o formalismo para construir sistemas capazes 
 de reconhecer linguagens e transformar em representações para o uso do computador.
@@ -56,62 +69,66 @@ de reconhecer linguagens e transformar em representações para o uso do computa
 \section{Análise Léxica}
 
 O objetivo da análise léxica é ler uma sequência de caracteres como entrada, agrupar essa entrada em 
-uma estrutura chamada lexemas e então produzir como saída um conjunto de 
+\textit{strings} chamada lexemas e então produzir como saída um conjunto de 
 tokens para cada lexema construído. O analisador léxico também pode limpar espaços 
 em brancos, comentários e outros caracteres que podem ser ignorados da entrada \cite{aho2006}.
 
-Segundo \citeonline{aho2006}, um token é uma estrutura que possui um nome e um valor de atributo opcional.
-O nome do token é um símbolo abstrato que representa uma unidade léxica, isto é, uma  palavra chave ou
+Podemos fazer uma analogia com o português, os lexemas são as palavras da língua e os tokens são
+a classe gramatical.
+
+Um token é uma estrutura que possui um tipo, uma referência ao lexema e podem ter atributos como número de linha 
+e/ou coluna.
+O tipo do token é um símbolo abstrato que representa uma unidade léxica, isto é, uma  palavra chave ou
 uma sequência de caracteres que definem um identificador e o valor é algum atributo associado aquele token.
 
-Outro conceito importante é o padrão do token, este é uma descrição da forma em que lexemas de
+Outro conceito importante é o padrão de formação, este é uma descrição da forma em que lexemas de
 um token podem ocorrer na entrada. Portanto, para construir um lexema é necessário 
-encontrar uma sequência de caracteres na entrada que corresponde a algum padrão predefinido \cite{aho2006}.
+encontrar uma sequência de caracteres na entrada que corresponde a algum padrão predefinido.
+Por exemplo, um token que representa números inteiros pode corresponder a um padrão que agrupa
+qualquer sequência de dígitos em um único lexema.
 
-Quando mais de um lexema pode corresponder a um mesmo padrão, é necessário passar mais informações 
-pelo atributo do token. Por exemplo, o padrão para o token que representa um número binário, pode conter
-os valores 0 ou 1. Entretanto é importante saber especificamente qual o lexema que foi lido da entrada. 
-Para guardar esse valor é utilizado um atributo opcional que armazena o valor, no caso os caracteres 
-0 ou 1 \cite{aho2006}.
-
-Para construir um analisador léxico é necessário portanto especificar os padrões para cada token. 
-Isto é descrever como devem ser os lexemas para cada token. Esse padrão pode ser especificado 
+Para construir um analisador léxico é necessário portanto especificar os padrões de formação para cada token. 
+Isto é descrever como devem ser os lexemas para cada token. Esse padrão é comumente especificado 
 utilizando expressões regulares.
 
 \subsection{Expressões Regulares}
 
-Segundo \citeonline{aho2006}, expressões regulares são uma notação utilizada para descrever linguagens.
-Para tal, aplica as operações explicadas na seção \ref{sec:languages} nos símbolos de um alfabeto.
-Essas expressões são construídas recursivamente a partir de expressões menores. 
+Expressões regulares são uma notação utilizada para descrever um tipo específico de linguagem, as linguagens regulares.
+Linguagens regulares usam as operações descritas em \ref{sec:languages} e associam uma sintaxe
+específica a cada uma destas três operações. As implementações encontradas na maioria das linguagens de programação
+são baseadas na sintaxe proposta pelo Perl e em alguns casos adicionam extensões não regulares a 
+linguagem.
 
+Essas expressões são construídas recursivamente a partir de expressões menores. 
 A unidade básica dessa expressão são os símbolos de um alfabeto. Por exemplo,
 se o caractere \textit{a} pertence a algum alfabeto então \textbf{a} é 
-uma expressão regular que representa uma linguagem com apenas o caractere \textit{a}.
+uma expressão regular que representa uma linguagem definida apenas pela palavra \textit{a}.
 
-Supondo que \textit{r} e \textit{s} são expressões regulares. As operações básicas 
-são representadas pela notação:
+Supondo que \textbf{r} e \textbf{s} são expressões regulares. Então, as operações básicas 
+são representadas pela seguinte notação:
 
 \begin{itemize}
-    \item (\textit{r})|(\textit{s}) expressão regular que denota união entre as linguagens L(\textit{r}) e 
-    L(\textit{s}).
-    \item (\textit{r})(\textit{s}) expressão regular que denota concatenação entre as linguagens L(\textit{r}) e 
-    L(\textit{s}).
-    \item (\textit{r})* expressão regular que representa a operação \textit{kleene closure} na linguagem L(\textit{r}).
-    \item (\textit{r}) expressão regular que representa a linguagem L(\textit{r}) e portanto parentêses não mudam
-    a linguagem representada.   
+    \item (\textbf{r})|(\textbf{s}) expressão regular que denota união entre as linguagens L(\textbf{r}) e 
+    L(\textbf{s}).
+    \item (\textbf{r})(\textbf{s}) expressão regular que denota concatenação entre as linguagens L(\textbf{r}) e 
+    L(\textbf{s}).
+    \item (\textbf{r})* expressão regular que representa a operação \textit{kleene closure} na linguagem L(\textbf{r}).
+    \item (\textbf{r}) expressão regular que representa a linguagem L(\textbf{r}). Os parentêses não mudam
+    a linguagem representada, e servem apenas para desambiguar expressões. Por exemplo, 
+    na expressão ((\textbf{r})|(\textbf{s}))* os últimos parentêses deixam explícito para qual expressão 
+    o operador \textit{kleene} está sendo aplicado.
 \end{itemize}
 
-
-Dado que \textit{letra} representa todas as letras aceitas pela linguagem C e
-que \textit{digito} representa todos as os dígitos aceitos pela linguagem C então
-os identificadores da linguagem C podem ser descritos utilizando a expressão regular:
+Por exemplo, dado que \textit{l} representa todas as letras e o \textit{underscore} 
+aceitas pela linguagem C e que \textit{d} representa todos as os dígitos aceitos 
+pela linguagem C então os identificadores da linguagem C podem ser descritos utilizando 
+a expressão regular:
 
 \begin{center}
-letra(letra|digito)*
+l(l|d)*
 \end{center}
-
-Isto significa que identificadores em C sempre começam com uma letra e podem ter zero ou mais letras ou dígitos
-subsequentes.
+Isto significa que identificadores em C sempre começam com uma letra ou \textit{underscore} 
+e podem ter zero ou mais letras, \textit{underscores} e dígitos subsequentes.
 
 \section{Análise Sintática}
 \label{sec:sintatic}
@@ -126,59 +143,66 @@ uma estrutura sintática válida \cite{aho2006}.
 
 A especificação dessas regras pode ser feita utilizando uma notação chamada gramática 
 livre de contexto, nela as regras de sintaxe são definidas de 
-maneira precisa e fácil de entender \cite{aho2006}.
+maneira precisa e fácil de entender.
 
-Mais formalmente, uma gramática livre de contexto consiste de quatro partes. Sendo elas
+Mais formalmente, uma gramática livre de contexto consiste em quatro partes. Sendo elas
 o conjunto dos terminais, o conjunto dos não terminais, o símbolo inicial e as produções.
 
-\begin{itemize}
-    \item \textbf{Terminais}: São os símbolos básicos que formam a sequência de caracteres da entrada. O analisador léxico retorna tokens que possuem
-    terminais. 
-    \item \textbf{Não Terminais}: Chamados de variáveis sintáticas denotam conjuntos de sequências de caracteres. Também impõe 
-    uma estrutura hierárquica na linguagem.
-    \item \textbf{Símbolo Inicial}: Diferencia um não terminal para ser considerado como inicial na interpretação da gramática.
-    \item \textbf{Produção}: Especifica a maneira como os terminais e não terminais podem ser combinados para formar uma entrada válida. É divido
-    em três partes.
-    \begin{itemize}
-        \item O lado esquerdo que possui um não terminal.
-        \item No meio o símbolo ::=
-        \item O lado direito ou corpo da produção consiste de zero ou mais terminais e/ou não terminais e especifica
-        a forma de construir uma sequência de caracteres para o não terminal referente a seu lado esquerdo.
-    \end{itemize}
-\end{itemize}
+\begin{description}
+    \item[Terminais] São os símbolos básicos que formam a sequência de 
+    caracteres da entrada. O analisador léxico retorna tokens que possuem terminais. 
+    \item [Não Terminais] Chamados de variáveis sintáticas denotam conjuntos 
+    de sequências de caracteres. Também impõe uma estrutura hierárquica na linguagem.
+    \item[Símbolo Inicial] Diferencia um não terminal para ser considerado 
+    como inicial na interpretação da gramática. Corresponde a raiz da árvore sintática
+    resultante.
+    \item[Produção] Declara a maneira como os terminais e não terminais 
+    podem ser combinados para formar uma entrada válida. É dividido em três partes,
+    como em a : $\beta$, o lado esquerdo que possui um não terminal, e o lado direito 
+    ou corpo da produção que, consiste de zero ou mais terminais e/ou não terminais e especifica
+    a forma de construir uma sequência de caracteres para o não terminal referente a seu lado esquerdo.
+\end{description}
 
-A gramática exemplificada no Código \ref{lst:grammar} permite construir expressões aritméticas simples. 
-Os não terminais são: <expr>, <term>, <factor>; Os terminais são: +, -, *, /, (, ), id; O símbolo inicial é <expr>.
+A notação utilizada é uma \textit{Backus Normal Form} extendida baseada na 
+biblioteca Lark\footnote{\url{https://github.com/lark-parser/lark}}. Nesta notação os não 
+terminais são sempre escritos em caixa baixa e os terminais podem ser escritos de duas 
+maneiras, literais simples utilizando aspas duplas ou terminais complexos escritos em caixa alta \cite{lark}.
 
-\begin{lstlisting}[caption=Exemplo de gramática livre do contexto, ,label={lst:grammar}]
-expr ::= expr '+' term | expr '-' term | term
+A gramática exemplificada no Código \ref{lst:grammar} define uma linguagem capaz de representar 
+expressões aritméticas simples. Os não terminais são: expr, term e factor. 
+Os terminais são: "+", "-", "*", "/", "(", ")" e ID (representa um identifador que é definido usando
+uma expressão regular). Por fim, o símbolo inicial é expr.
 
-term ::= term '*' factor | term '/' factor | factor
+\begin{lstlisting}[caption=Exemplo de gramática livre do context que descreve expressões
+    aritméticas como (20 + 1) * 2.,label={lst:grammar}]
+expr : expr "+" term 
+     | expr "-" term
+     | term
 
-factor ::= '(' expr ')' | 'id'
+term : term "*" factor
+     | term "/" factor
+     | factor
+
+factor : "(" expr ")"
+       | ID
 \end{lstlisting}
 
-Para a construção de um analisador sintático(\textit{parser}) é importante entender o conceito de derivação. 
+Para a construção de um analisador sintático (\textit{parser}) é importante entender o conceito de derivação. 
 A partir do símbolo inicial são feitos passos de reescrita onde um não terminal é substituído pelo
-corpo da sua produção. Por exemplo considere a primeira produção da gramática no Código \ref{lst:grammar}. 
+corpo da sua produção. 
 
+Por exemplo, considere a primeira produção da gramática na linha 1 do Código \ref{lst:grammar}. 
+Essa linha pode ser lida da seguinte maneira "expr \textbf{deriva} expr + term". 
+E isso significa que o não terminal expr pode ser substituído pela produção expr + term. 
+
+Por exemplo, a notação utilizada para representar essa substituição é.
 \begin{center}
-expr ::= expr '+' term
+expr $\Rightarrow$ 40 + 2
 \end{center}
-
-Isso pode ser lido como "expr \textbf{deriva} expr '+' term". E isso significa que expr pode
-ser substituído por expr '+' term. A notação utilizada para representar essa substituição é.
-
+Além disso, essas substituições podem ser aplicadas de forma sequencial. Por exemplo,
 \begin{center}
-expr => expr '+' term
+    expr $\Rightarrow$ expr + term $\Rightarrow$ term + factor $\Rightarrow$ factor + 2 $\Rightarrow$ 40 + 2
 \end{center}
-
-Essas substituições podem ser aplicadas de forma sequencial. Por exemplo,
-
-\begin{center}
-    expr => term => factor => 'id'
-\end{center}
-
 Essa sequência de substituições é denominada derivação e possui papel fundamental para entender
 como construir um analisador sintático \cite{aho2006}. 
 
@@ -189,20 +213,22 @@ pode-se dizer que essa árvore também representa a entrada.
 \begin{figure}[h]
 	\centering
 	\includegraphics[keepaspectratio=true,scale=1]{figuras/parsetree.png}
-	\caption{Exemplo de Parse Tree \cite{aho2006}.}
+	\caption{Exemplo de Parse Tree.}
 	\label{fig:parsetree}
 \end{figure}
 
-Um exemplo de \textit{parse tree} pode ser visto na Figura \ref{fig:parsetree}. Essa árvore significa a derivação
-a seguir:
+Utilizando a gramática especificada no Código \ref{lst:grammar}, porém com uma pequena alteração
+onde os não terminais são representados apenas pelas suas primeiras letras, teríamos \ref{fig:parsetree}. 
+Essa árvore equivale à derivação a seguir:
 
 \begin{center}
-    E => E + E => id + E => id + E * E => id + id * E => id + id * id
+    E $\Rightarrow$ E + T $\Rightarrow$ T + T $\Rightarrow$ F + T $\Rightarrow$ 40 + T $\Rightarrow$ 40 + F $\Rightarrow$ 40 + 2
 \end{center}
 
-Segundo \cite{aho2006}, existem três tipos genéricos de \textit{parsers} para gramáticas 
-livre de contexto: universal, \textit{top-down} e \textit{bottom-up}. Os métodos de \textit{parsing}
-universais podem analisar qualquer gramática. Porém, são ineficientes.
+Existem três tipos genéricos de \textit{parsers} para gramáticas livre de contexto: 
+universal, \textit{top-down} e \textit{bottom-up}. Os métodos de \textit{parsing}
+universais podem analisar qualquer gramática. Porém, muitas vezes exponenciais, por exemplo o algoritmo Earley,
+um dos mais eficientes nesta categoria, tem no pior caso complexidade assintótica O($n^3$).
 
 Normalmente os métodos mais utilizados são  \textit{top-down} ou \textit{bottom-up}. Onde no primeiro
 a \textit{parse tree} é construída a partir do topo, da raiz até as folhas. E no segundo é o inverso,
@@ -214,25 +240,31 @@ do tipo \textit{top-down}.
 
 \subsection{Analisadores \textit{Top-Down}}
 
-Segundo \cite{aho2006}, a construção de analisadores do tipo \textit{top-down} é como o processo de
-de construir a \textit{parse tree} a partir do topo e isto é
-equivalente a encontrar a derivação mais à esquerda para a entrada.
+A construção de analisadores do tipo \textit{top-down} é como o processo de
+construir a \textit{parse tree} a partir do topo e isto é
+equivalente a encontrar a derivação mais à esquerda para a entrada \cite{aho2006}.
 
-\begin{lstlisting}[caption=Exemplo de gramática para analisadores top-down,label={lst:grammartopdown}]
-E  ::= TE'
+Para exemplificar considere a gramática descrita no Código \ref{lst:grammartopdown}. Esta
+representa uma linguagem para expressões aritméticas parecida com a definida no 
+Código \ref{lst:grammar}, porém sofreu mudanças para adequar ao processo de \textit{parsing top-down}.
 
-E' ::= '+'TE' | ''
+Uma dessas mudanças foi retirar recursões a esquerda da gramática, pois esta leva a
+problemas durante a análise \cite{aho2006}.
 
-T  ::= FT'
+\begin{lstlisting}[caption=Exemplo de gramática para analisadores top-down onde o símbolo epsilon representa uma produção vazia.,label={lst:grammartopdown}]
+e  : t e'
 
-T' ::= '*'FT' | ''
+e' : "+" t e' 
+   | ε
 
-F  ::= '('E')' | 'id'
+t  : f t'
+
+t' : "*" f t' 
+   | ε
+
+f  : "(" e ")"
+   | ID
 \end{lstlisting}
-
-Por exemplo dado a gramática descrita no Código \ref{lst:grammartopdown}, a análise sintática a partir do topo
-consiste em cada etapa determinar qual produção aplicar para o não terminal. Depois que uma produção for escolhida
-o processo resume-se a combinar os terminais no corpo da produção com os tokens da entrada. 
 
 \begin{figure}[h]
 	\centering
@@ -241,76 +273,119 @@ o processo resume-se a combinar os terminais no corpo da produção com os token
 	\label{fig:parsetopdowntree}
 \end{figure}
 
-Um exemplo de análise \textit{top-down} está na Figura \ref{fig:parsetopdowntree} 
-onde existem várias árvores representando as derivações para a entrada \textbf{id + id * id}.
+A análise sintática a partir do topo consiste em cada etapa determinar qual produção 
+aplicar para o respectivo não terminal. Depois que uma produção for escolhida
+o processo resume-se a combinar os terminais no corpo da produção com os tokens da entrada.
+
+Um exemplo de análise \textit{top-down} pode ser visualizado na Figura \ref{fig:parsetopdowntree},
+onde existem várias árvores de derivação representando cada etapa do processo de análise para a 
+entrada \textbf{id + id * id}. Este processo utiliza a gramática definida no Código \ref{lst:grammartopdown}.
 
 Descida recursiva é uma maneira simples e genérica para construir um \textit{parser top-down}.
 Nesse tipo de analisador existe um conjunto de procedimentos para cada não terminal \cite{aho2006}. 
 
-A execução começa chamando o procedimento para o símbolo inicial e então 
-termina a execução com sucesso se a execução ler toda a entrada \cite{aho2006}. 
+A execução começa chamando recursivamente o procedimento para o símbolo inicial e então 
+termina a execução com sucesso se a execução ler toda a entrada. 
 
 Esse tipo de analisador pode necessitar de \textit{backtracking}. Isto é, ler a entrada toda
-novamente repetidas vezes. Pois caso o caminho tomado durante o momento de escolher uma produção falhar.
-É necessário reiniciar a execução usando outra produção. A necessidade de recomeçar a execução
+novamente repetidas vezes. Caso o caminho tomado durante o momento de escolher uma produção falhar,
+é necessário reiniciar a execução usando outra produção. A necessidade de recomeçar a execução
 pode elevar o tempo de execução para valores exponenciais \cite{aho2006}. 
-
-\begin{lstlisting}[caption=Exemplo de procedimento para um não terminal em descida recursiva,label={lst:recursive}]
-def A():
-    choose_A_production()
-    for x in body_production:
-        if is_nonterminal(x):
-            procedure_for_x()
-        elif x == current_token():
-            next_token()
-        else:
-            error()
-\end{lstlisting}
 
 Um exemplo de procedimento para um não terminal pode ser visto no Código \ref{lst:recursive}.
 
-Segundo \citeonline{aho2006}, para evitar a necessidade de \textit{backtracking}. 
-Existe uma classe de parsers chamada preditiva. Ela consegue determinar a próxima produção 
-a ser executada analisando os próximos tokens da entrada.
+\begin{lstlisting}[caption=Exemplo de procedimento em pseudo-python para um não terminal,label={lst:recursive}]
+def E(tokens):
+    return [T(tokens), E_(tokens)]
 
-Esse tipo de analisador sintático pode ser construído para uma classe de gramática chamada LL(1), isto significa
-ler a entrada da esquerda para a direita, encontrar a derivação mais à esquerda durante a execução e olhar 
-apenas o token atual da entrada.
+def E_(tokens):
+    if tokens[0] == "+":
+        plus = tokens.pop(0)
+        return [plus, T(tokens), E_(tokens)]
+    else:
+        return None
 
-Para construir esse tipo de \textit{parser} é necessário uma abstração que permita escolher qual produção
-a ser executada de maneira determinística.
+...
+\end{lstlisting}
 
-Isto pode ser alcançado com uma \textit{predictive parsing table}. Essa tabela consiste
-de linhas representando não terminais, colunas representando símbolo de entrada e o valor
-dentro da célula diz qual produção escolher dado um não terminal e um símbolo.
+
+\subsection{\textit{Parser Combinators}}
+
+Outro método para construir \textit{parsers top-down} bastante comum, 
+principalmente em linguagens funcionais, são os chamados \textit{parsers combinators},
+esse modelo é construído a partir de um analisador com descida recursiva \cite{hutton1996monadic}.
+
+Essa técnica utiliza funções como \textit{parsers} e define outras funções de alta ordem que
+implementam abstrações das gramáticas livres de contexto, 
+isto é, sequências, escolha e repetição.
+
+O método consiste em criar pequenos \textit{parsers} para as produções da gramática como funções. 
+E utilzar as funções que representam as abstrações das gramáticas livres de contexto 
+para combinar esses parsers.
+
+Podemos definir um parser como uma função que recebe como entrada uma lista de \textit{tokens}
+e tem como saída uma árvore e o restante da entrada. Um exemplo simples de parser pode ser
+visto no Código \ref{lst:itemparser}, nele o primeiro item da lista é consumido apenas
+se o primeiro item for um espaço em branco. Caso isso não ocorra o parser falha.
+
+\begin{lstlisting}[caption=Exemplo de parser em pseudo-python,label={lst:itemparser}]
+def whitespace(tokens):
+    if not tokens or tokens[0].type != SPACE:
+        raise SyntaxError
+    else:
+        return tokens[0], tokens[1:]
+\end{lstlisting}
+
+Um exemplo de combinador pode ser o sequenciamento, isto é aplicar um parser após o outro. 
+Em gramática livre do contexto a notação para uma sequência é apenas colocar um 
+item ao lado do outro na produção. O código em pseudo-python para representar
+esse combinador está em \ref{lst:seqcomb}.
+
+\begin{lstlisting}[caption=Exemplo de combinador em pseudo-python,label={lst:seqcomb}]
+def seq(parser1, parser2):
+    def seq_parser(tokens):
+        (result1, tokens) = parser1(tokens)
+        (result2, tokens) = parser2(tokens)
+        return ((result1, result2), tokens)
+    return seq_parser
+\end{lstlisting}
+
+\textit{Parser combinators} implementam gramáticas a partir da composição de funções deste tipo
+com funções primitivas.
+
+\subsection{\textit{Parser} LL(1)}
+
+Existe uma classe de \textit{parsers} chamada preditiva que evitam a necessidade de \textit{backtracking}. 
+Ela consegue determinar a próxima produção a ser executada de maneira determinística 
+analisando os próximos tokens da entrada.
+
+Um exemplo concreto são os analisadores LL(1). Neste tipo de \textit{parsing} 
+o processo é parecido com a descida recursiva. Entretanto, no momento de escolher 
+a produção o token atual da entrada é analisado e pode-se determinar 
+a produção correta a ser escolhida. Isto evita a necessidade de fazer \textit{backtracking}.
+
+Para construir esse tipo de \textit{parser} é necessário um algoritmo 
+que permita escolher qual produção a ser executada de maneira determinística.
+
+Este algoritmo utiliza uma \textit{predictive parsing table}. Essa tabela consiste
+de linhas representando não terminais, colunas representando o símbolo de entrada e o valor
+dentro da célula diz qual produção escolher durante o \textit{parsing}. 
 
 O método para construir essa tabela necessita antes de duas operações comumente chamadas \textit{FIRST} e 
 \textit{FOLLOW}.
 
-A definição de FIRST(A), onde A é qualquer sequência de símbolos da gramática e portanto pode 
-ser tanto terminal como não terminal, é o conjunto dos terminais que iniciam as 
+A definição de FIRST(A), onde A é qualquer sequência de símbolos da gramática, 
+é o conjunto dos terminais que iniciam as 
 sequências derivadas a partir de A. 
+De maneira genérica, dado uma derivação A $\Rightarrow$ ... $\Rightarrow$ cy onde c é um terminal, logo
+c pertence ao conjunto FIRST(A).
+Por exemplo utilizando a gramática \ref{lst:grammartopdown}, o FIRST(F) é o conjunto com
+dois terminais \textbf{(} e \textbf{ID}. Como F não deriva string vazia o FIRST(T) e FIRST(E) são iguais.
 
-Como exemplo temos que, dado uma derivação A => ... => cy onde c é um terminal, 
-logo c pertence ao conjunto FIRST(A). Pois inicia a sequência que foi derivada de A, isto é cy, 
-e c é um terminal.
-
-A definição de FOLLOW(A), onde A é um não terminal, é o conjunto de terminais x que podem aparecer imediatamente
-a direita de A. Isto é, o conjunto de terminais x em derivações na forma S => ... => wAxy.
-
-Com esses dois conjuntos pode-se construir a tabela preditiva. Com o seguinte algoritmo:
-
-Para cada produção A ::= y da gramática.
-
-\begin{itemize}
-    \item Para cada terminal em FIRST(A), adicionar a produção A ::= y na tabela na linha do não terminal A e na coluna
-    referente ao terminal.
-    \item Se o terminal que representa caractere vazio estiver presente em FIRST(y). Então 
-    adicionar a produção A ::= y na tabela. Especificamente na linha do não terminal A e 
-    na coluna referente a cada terminal presente em FOLLOW(A).
-\end{itemize}
-
-Um exemplo de tabela preditiva pode ser visto em \ref{tbl:predictive}.
+A definição de FOLLOW(A) é o conjunto de terminais x que podem aparecer imediatamente
+à direita de um não terminal A. Isto é, o conjunto de terminais x em derivações na forma 
+S $\Rightarrow$ ... $\Rightarrow$ wAxy onde w e y podem ser qualquer sequência de símbolos.
+Por exemplo utilizando a gramática \ref{lst:grammartopdown}, O FOLLOW(E) é composto pelo terminal \textbf{)}.
 
 \begin{table}[h]
     \centering
@@ -323,90 +398,14 @@ Um exemplo de tabela preditiva pode ser visto em \ref{tbl:predictive}.
         \midrule
                        & \textbf{id} & \textbf{+} & \textbf{*} & \textbf{(} & \textbf{)}   \\
         \midrule
-        \textbf{E}     & E ::= TE'  &            &             & E ::= TE'  &     \\
-        \textbf{E}     &            & E' ::= +TE'&             &            & E ::= e   \\
-        \textbf{T}     & T ::= FT'  &            &             & T ::= FT'  &     \\
-        \textbf{T'}    &            & T' ::= e   & T' ::= *FT' &            & T' ::= e    \\
-        \textbf{F}     & F ::= id   &            &             & F ::= (E)  &     \\
+        \textbf{E}     &     1      &      -      &      -       &     1    &    -    \\
+        \textbf{E'}    &     -      &      3      &      -       &     -    &    4    \\
+        \textbf{T}     &     6      &      -      &      -       &     6    &    -    \\
+        \textbf{T'}    &     -      & 9           &      8       &     -    &    9    \\
+        \textbf{F}     &     12     &      -      &      -       &     11   &    -    \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-Outro método para construir \textit{parsers top-down} bastante comum 
-principalmente em linguagens funcionais são os chamados \textit{parsers combinators},
-nesse modelo é construído um analisador com descida recursiva \cite{hutton1996monadic}.
-
-Essa técnica utiliza funções como \textit{parsers} e define outras funções de alta ordem que
-implementam abstrações das gramáticas livres de contexto, 
-isto é, sequências, escolha e repetição \cite{hutton1996monadic}.
-
-O método consiste em criar pequenos \textit{parsers} para as produções da gramática como funções. 
-E utilzar as funções que representam as abstrações das gramáticas livres de contexto 
-para combinar esses parsers \cite{hutton1996monadic}.
-
-\section{Formatos para serialização de dados}
-
-Nas seções anteriores foram discutidas maneiras para transformar um texto 
-em uma representação computacional. Para tal foram definidas algumas abstrações
-como linguagens, gramáticas e \textit{parsers}.
-
-Como dito no Cap. \ref{sec:objective} o objetivo deste trabalho é definir
-uma representação para troca de dados. Portanto é essencial discutir outras
-notações existentes. Especialmente JSON (JavaScript Object Notation) e 
-XML (Extensible Markup Language).
-
-Segundo \citeonline{ecma404}, JSON é uma notação em formato de texto criada para facilitar 
-a troca de dados entre sistemas. Foi baseada na linguagem JavaScript (ECMAScript). 
-Tem o objetivo de ser fácil de ler e escrever e também ser fácil para máquinas interpretar e gerar.
-
-Um valor JSON pode ser do tipo \textit{object}, \textit{array}, \textit{number}, \textit{string}, 
-\textit{true}, \textit{false} ou \textit{null}. 
-
-O tipo object é um conjunto de zero ou mais pares nome/valor. Um exemplo está em \ref{lst:jsonobj}
-
-\begin{lstlisting}[caption=Exemplo de JSON Object,label={lst:jsonobj}]
-    {
-        "name" : "value",
-        "name1" : 123
-    }
-\end{lstlisting}
-
-Já o tipo array é um conjunto de valores JSON separados por virgúlas, como visto no exemplo \ref{lst:jsonarr}.
-
-\begin{lstlisting}[caption=Exemplo de JSON Array,label={lst:jsonarr}]
-    [123, "str", true, false, null]
-\end{lstlisting}
-
-A especificação do JSON propositalmente é simples. O objetivo é definir apenas a sintaxe e não a semântica
-sobre como um valor JSON pode ser convertido para uma estrutura de dado de uma linguagem de programação.
-A troca de dados entre sistemas usando JSON necessita de um acordo entre as partes envolvidas.
-
-Outro formato muito conhecido é XML (Extensible Markup Language). Essa notação define os chamados documentos XML.
-E também define parcialmente o comportamento dos processadores de XML \cite{XML}. 
-
-Segundo \citeonline{XML}, para os documentos XML serem válidos eles devem seguir uma especificação, 
-logicamente a abstração principal é o chamado elemento e um documento contém um ou mais elementos. 
-Um elemento consiste de \textit{start-tags} e \textit{end-tags} ou no caso de um elemento vazio 
-consiste de um \textit{empty-element tag}. Esses elementos possuem um tipo definido pelo seu nome e 
-podem ter atributos. Como pode ser visto no exemplo \ref{lst:xmlelement}.
-
-\begin{lstlisting}[caption=Exemplo de elementos XML,label={lst:xmlelement}]
-    <termdef id="dt-dog" term="dog">duke</termdef>
-    <foo>bar</foo>
-    <br />
-\end{lstlisting}
-
-Existem também outros formatos tanto de texto como binários com foco na troca de dados
-ou em representar arquivos de configuração. Para este trabalho os formatos \textit{Amazon Ion, edn e TOML}
-trazem conceitos que evoluem os modelos JSON e XML.
-
-\begin{itemize}
-    \item \textbf{Amazon Ion}: Esta notação permite tanto texto como binário, o formato de texto
-    é compátivel com JSON porém possui um modelo de dados com mais tipos, por exemplo blobs binários e
-    timestamp.
-    \item \textbf{TOML}: O formato TOML tem um foco em arquivos de configuração e em ser simples, 
-    entretanto o modelo de dados também é mais diverso que o do JSON com tipos para datas por exemplo.
-    \item \textbf{edn}: Este formato possui um modelo de dados rico e suporta um 
-    mecanismo de extensibilidade para indicar mais semântica aos dados, esta abstração possui 
-    alguma semelhança com o XML. Também suporta \textit{streaming} facilmente diferente de JSON.
-\end{itemize}
+Um exemplo de tabela preditiva pode ser visto em \ref{tbl:predictive}, os números referenciam as linhas 
+do Código \ref{lst:grammartopdown} onde estão as produções.

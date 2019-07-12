@@ -1,51 +1,80 @@
 \chapter[Conclusão]{Conclusão}
 
-O projeto consistiu em especificar e implementar uma linguagem para troca de dados.
-A especificação foi construída com o objetivo de facilitar as implementações.
-Para tal, a gramática permite desenvolver parsers com técnicas simples como 
-LL(1) e descida recursiva.
+O projeto consistiu em especificar e implementar uma linguagem para troca de dados, chamada FRED.
+A especificação foi construída com o objetivo de facilitar a implementação e portanto
+utiliza recursos simples.
 
 A primeira implementação foi feita em Haskell e utiliza a técnica
-de \textit{parsers combinators}. Neste analisador a separação entre léxico, sintático
-e semântico não ficou clara. Entretanto o código foi modularizado por meio
+de \textit{parsers combinators}. Neste analisador, a separação entre léxico, sintático
+e semântico não ficou clara. Algo que é comum neste tipo de técnica. 
+Entretanto, o código foi modularizado por meio 
 das funções e módulos que estão associados a partes da linguagem.
 
-Já o segundo analisador foi escrito em JavaScript. Esta implementação
+O segundo analisador foi escrito em JavaScript. Esta implementação
 utilizou uma biblioteca que constrói parsers LL(k). A arquitetura foi dividida 
 de maneira clara entre o analisador léxico, sintático e semântico, pois
 a biblioteca também separa essas responsabilidades.
 
 Com as implementações desenvolvidas foi necessário uma forma de verificar se estas
 condizem com a especificação. Para tanto, uma suíte de testes agnóstica a linguagem
-de implementação foi desenvolvida. Ela consiste de dois conjuntos de testes
+de implementação foi desenvolvido. Ela consiste de dois conjuntos de testes
 que verificam documentos FRED válidos e inválidos de acordo com a especificação.
-
 As implementações portanto utilizam essa suíte e verificam se estão de 
 acordo com a especificação.
 
-Durante o desenvolvimento do projeto foi realizado uma análise a 
-respeito da linguagem FRED e suas características. Também foi realizado
-uma comparação simples com outros formatos correlatos. Entretanto,
+Durante o desenvolvimento do projeto, realizamos uma análise a 
+respeito da linguagem FRED e suas características. Entretanto,
 não é posível afirmar que as características diferenciais melhoram
-a usabilidade ou a legibilidade. Necessitando desenvolver melhor o
+a usabilidade ou a legibilidade. Para tal, é necessário desenvolver melhor o
 ecossistema e realizar estudos comparativos mais formais.
 
-A linguagem FRED foi especificada e implementada em dois ambientes,
-entretanto é necessário mais estudos sobre as vantagens e desvantagens
-de utilizá-la e também desenvolver projetos utilizando FRED.
+Também fizemos uma comparação simples com outros formatos correlatos, 
+a métrica coletada foi o tamanho dos arquivos, percebe-se que os 
+arquivos FRED são menores nos casos de uso explorados. Porém estudos mais
+formais e amplos são necessários visto que não é parte do escopo do projeto
+um estudo comparativo formal.
+
+O formato FRED foi especificado e implementado em apenas duas linguagens de programação,
+portanto são necessários mais estudos sobre as vantagens e desvantagens
+de utilizar este format em outras linguagens. Para tal, é preciso mais realizar mais projetos 
+utilizando FRED e portanto implementar FRED em outras linguagens é essencial.
+
+Faltam também estudos relacionados a performance de \textit{parsing}. Já que, não foi 
+realizado pois não existem ainda \textit{parsers} de FRED implementados manualmente e calibrados 
+para performance máxima. Isto distorceria os resultados já que as alternativas para XML e JSON
+existem e são extremamente maduras.
 
 \section{Trabalhos Futuros}
 
 Como sequência a este projeto, percebe-se a necessidade de
 um estudo comparativo entre as linguagens correlatas, especialmente JSON e XML.
 
-Não era parte do projeto fazer esta comparação de maneira formal. Entretanto,
+Não era escopo do projeto fazer esta comparação. Entretanto,
 este estudo pode fornecer informações úteis para futuras evoluções da linguagem
 e do seu ecossistema.
 
-Também para melhorar o ecossistema do FRED, é necessário estudos
-sobre verificação e validação. E possivelmente definir uma especificação 
+Também para melhorar o formato FRED, é necessário estudos sobre verificação e 
+validação de modelo de dados e com isso definir uma especificação 
 de um formato para \textit{schemas}.
 
-Outro trabalho futuro é experimentar a linguagem em diferentes casos de uso
-com o objetivo de entender onde existem vantagens e desvantagens no seu uso.
+É necessário um estudo de performance de \textit{parsing}, porém primeiro
+é necessário implementar JSON e XML numa biblioteca de \textit{parsing} comum,
+como a utilizada nas implementações deste trabalho, ou implementar FRED 
+de forma otimizada em uma linguagem como C.
+
+Em relação a performance vale a pena mencionar que JSON é compatível com LL(1) a 
+nível de caractere individual e isto permite implementações mais eficientes pois não 
+é necessário fazer a análise léxica separadamente. Já FRED provavelmente não é devido 
+a ambiguidades, por exemplo com o ínicio de null e uma tag que começa com n.
+
+Implementar o formato FRED em outras linguagens de programação
+é extremamente necessário para possibilitar mais estudos e experimentos
+em diferentes casos de uso. 
+
+Uma dessas implementações a serem feitas deve utilizar as 
+técnicas de descida recursiva e  LL(1) para garantir 
+que a gramática é de fato compatível com essas premissa.
+
+Também é necessário estabilizar a sintaxe, pois a partir da opinião
+da comunidade e de trabalhos futuros, possíveis melhorias e mudanças serão
+sugeridas.

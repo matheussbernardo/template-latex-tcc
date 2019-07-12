@@ -1,34 +1,43 @@
 \chapter[Introdução]{Introdução}
 
-Na computação os formatos utilizados para representar dados
-possuem muita importância pois a maneira em que eles são organizados
-influem tanto na leitura e escrita por humanos como também 
+Formatos utilizados para representar dados possuem muita importância 
+em vários sistemas computacionais, pois a maneira em que eles são organizados
+e o poder de representação influem tanto na leitura e escrita por humanos como também 
 na interpretação pelos computadores.
 
-Com o advento da internet a comunicação entre sistemas aumentou.
+Com o advento da internet, a comunicação entre sistemas aumentou.
 Por isso foi necessário a criação de formatos padronizados para representar
-os dados comunicados. Dentre estes destaca-se XML e JSON.
+os dados utilizados na comunicação de sistemas que frequentemente adotam 
+tecnologias diferentes e diferentes linguagens de programação. 
+Os dois formatos mais utilizados hoje em dia são XML e JSON.
 
-O XML foi concebido a partir de uma linguagem de marcação chamada SGML.
-Um de seus objetivos é ser de fácil utilização na internet \cite{XML}.
+O XML foi concebido a partir de uma linguagem de marcação, SGML.
+Um de seus objetivos é ser de fácil utilização na internet e representam 
+documentos utilizando a metáfora de marcações de texto \cite{XML}.
 
 O formato JSON foi criado com base na representação de objetos 
-da linguagem JavaScript, possui uma sintaxe simples e tem como
-objetivo ser fácil tanto para humanos ler e escrever como
-para máquinas interpretar \cite{ecma404}.
+da linguagem JavaScript e é um subconjunto da linguagem, que
+possui uma sintaxe simples e tem como objetivo ser fácil tanto para 
+humanos ler e escrever como para máquinas interpretar \cite{ecma404}.
 
-Nesse projeto é especificado o FRED (\textit{Flexible REpresentation of Data}), 
+Nesse projeto especificamos o FRED (\textit{Flexible REpresentation of Data}), 
 um formato para representação e troca de dados. Este formato possui uma sintaxe
 inspirada no JSON porém incrementa o modelo de dados utilizando algumas 
-abstrações que lembram o XML.
+abstrações encontradas no XML.
 
-Além disso o FRED possui um modelo de dados um pouco mais complexo que JSON,
-permitindo por exemplo dados sobre data e hora, além disso mais tipos estão
+Além disso, o FRED possui um modelo de dados um pouco mais complexo que JSON,
+permitindo por exemplo dados sobre data e hora, entre outros
 definidos na especificação.
 
-Este trabalho propõe especificar e implementar a linguagem FRED, para tal
-um estudo sobre linguagens formais e compiladores foi feito com o objetivo
-de fornecer a base teórica necessária.
+Visto que, XML representa dados com o foco em marcação e JSON 
+possui um modelo de dados muito simples. O FRED possui uma sintaxe
+inspirada em JSON porém aumenta o modelo
+de dados e também permite extender este modelo mapeando naturalmente os 
+dados representados para como eles são usados 
+frequentemente. Isto é, facilitar a representação de dados por exemplo
+quando usados como classes, enums, entre outros.
+
+
 
 \section{Objetivos}
 \label{sec:objective}
@@ -45,6 +54,7 @@ desta nova linguagem.
 \begin{itemize}
     \item Especificar a linguagem de maneira formal.
     \item Implementar a linguagem com base na especificação.
+    \item Implementar o \textit{parser} em mais de uma linguagem de programação.
     \item Analisar e discutir a linguagem implementada.
 \end{itemize}
 
@@ -52,12 +62,12 @@ desta nova linguagem.
 
 Este trabalho está organizado em três partes principais:
 
-\begin{itemize}
-    \item \textbf{Referencial Teórico:} Esta seção trata da fundamentação teórica
+\begin{description}
+    \item[Referencial Teórico] Esta seção trata da fundamentação teórica
     utilizada no trabalho e tem o objetivo de fornecer a base para o desenvolvimento 
     do projeto.
-    \item \textbf{Metodologia:} Esta seção define como será feito o trabalho e também
+    \item[Metodologia] Esta seção define como será feito o trabalho e também
     o escopo do projeto.
-    \item \textbf{Resultados:} Esta seção aborda os resultados que foram alcançados no decorrer
+    \item[Resultados] Esta seção aborda os resultados que foram alcançados no decorrer
     do projeto.
-\end{itemize}
+\end{description}

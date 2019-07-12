@@ -1,0 +1,72 @@
+{
+    "Person": {
+        "source": "facebook",
+        "name": "Richard",
+        "birth-date": "1997-12-08",
+        "age": 21,
+        "accomplishments": [
+            "High School",
+            "Chess champion"
+        ],
+        "friends": [
+            {
+                "Person": {
+                    "source": "twitter",
+                    "name": "Lucas Bernardo",
+                    "birth-date": "1897-12-08",
+                    "age": 121,
+                    "accomplishments": [
+                        "Middle School",
+                        "Soccer MVP"
+                    ]
+                }
+            },
+            {
+                "Person": {
+                    "source": "facebook",
+                    "name": "Matheus",
+                    "birth-date": "1987-12-08",
+                    "age": 31,
+                    "accomplishments": [
+                        "PhD",
+                        "Chess champion"
+                    ]
+                }
+            },
+            {
+                "Person": {
+                    "source": "facebook",
+                    "name": "Joao",
+                    "birth-date": "1950-10-03",
+                    "age": 50,
+                    "accomplishments": [
+                        "Best Soccer Player at School"
+                    ]
+                }
+            },
+            {
+                "Person": {
+                    "source": "orkut",
+                    "name": "Maria",
+                    "birth-date": "1998-12-08",
+                    "age": 20,
+                    "accomplishments": [
+                        "College Degree"
+                    ]
+                }
+            },
+            {
+                "Person": {
+                    "source": "myspace",
+                    "name": "John",
+                    "birth-date": "2000-12-08",
+                    "age": 19,
+                    "accomplishments": [
+                        "High School",
+                        "Checkers champion"
+                    ]
+                }
+            }
+        ]
+    }
+}

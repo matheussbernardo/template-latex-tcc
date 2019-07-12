@@ -1,0 +1,25 @@
+<package name="node-js-sample">
+    <version>0.2.0</version>
+    <description>A sample Node.js app using Express 4</description>
+    <main>index.js</main>
+    <scripts>
+        <start>node index.js</start>
+    </scripts>
+    <dependencies>
+        <express version="^4.13.3" />
+    </dependencies>
+    <engines>
+        <node version="4.0.0" />
+    </engines>
+    <repository type="git" url="https://github.com/heroku/node-js-sample"/>
+    <keywords>
+        <value>node</value>
+        <value>heroku</value>
+        <value>express</value>
+    </keywords>
+    <author>Mark Pundsack</author>
+    <contributors>
+        <value>Zeke Sikelianos zeke@sikelianos.com (http://zeke.sikelianos.com)</value>
+    </contributors>
+    <license>MIT</license>
+</package>

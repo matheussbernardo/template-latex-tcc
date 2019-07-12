@@ -1,0 +1,101 @@
+\chapter{Formatos para serialização de dados}
+
+No capítulo anterior, foram discutidas maneiras para transformar um texto 
+em uma representação computacional. Para tal, foram definidas algumas abstrações
+como linguagens, gramáticas e \textit{parsers}.
+
+Como dito no Cap. \ref{sec:objective} o objetivo deste trabalho é definir
+uma representação para troca de dados. Portanto é essencial discutir outras
+notações existentes. Especialmente XML (Extensible Markup Language) e 
+JSON (JavaScript Object Notation).
+
+\section{XML (\textit{Extensible Markup Language})}
+
+Um formato muito conhecido é o XML (Extensible Markup Language). 
+Essa notação define os chamados documentos XML, e também define parcialmente o comportamento 
+dos processadores de XML \cite{XML}. 
+
+A origem do XML é a linguagem de marcação SGML e o XML é também portanto uma linguagem de marcação.
+Isto significa que a especificação foi pensada como uma analogia ao ato de marcar um texto físico.
+Como por exemplo em um processo de revisão.
+
+A abstração principal é o chamado elemento e um documento XML contém um ou mais elementos. 
+Um elemento consiste de tags de início e fim ou no caso de um elemento vazio 
+consiste de um \textit{empty-element tag}. Esses elementos delimitam uma marcação
+em um texto e possuem um tipo definido pelo seu nome além de permitirem a presença de atributos. 
+
+\begin{lstlisting}[caption=Exemplo de elementos XML,label={lst:xmlelement}]
+<termdef id="dt-dog" term="dog">duke</termdef>
+<foo>bar</foo>
+<br />
+\end{lstlisting}
+
+Entretanto, XML possui alguns problemas para representar dados. Um deles é
+que não mapeia de maneira natural algumas estruturas de dados como listas. A sintaxe é
+carregada e existe uma ambiguidade no uso de atributos e filhos. Além disso o texto 
+é misturado com os elementos.
+
+\section{JSON (\textit{JavaScript Object Notation})}
+
+JSON é uma notação em formato de texto, mais nova que o XML, criada para facilitar a troca de 
+dados de um servidor com o navegador web. Foi baseada na linguagem JavaScript (ECMAScript) e formalizada 
+pela \citeonline{ecma404} após a proposta inicial do Douglas Crawford.
+Tem o objetivo de ser fácil de ler e escrever e também ser fácil para máquinas interpretar e gerar.
+
+Um valor JSON pode ser do tipo \textit{object}, \textit{array}, \textit{number}, \textit{string}, 
+\textit{true}, \textit{false} ou \textit{null}, mapeando naturalmente para JavaScript e várias outras linguagens
+dinâmicas.
+
+\begin{lstlisting}[caption=Exemplo de JSON,label={lst:jsonobj}]
+{
+    "name": "Eberth",
+    "age": 45,
+    "friends": [
+        "Richard",
+        "Matthew"
+    ],
+    "studying": false
+    "sleeping": true
+    "bank_balance": null
+}
+\end{lstlisting}
+
+A especificação do JSON propositalmente é simples e foi concebida explicitamente
+com um subconjunto seguro implementado com o eval no JavaScript. 
+
+O objetivo é definir apenas a sintaxe e não a semântica sobre como um valor JSON pode 
+ser convertido para uma estrutura de dado de uma linguagem de programação, ainda que
+muitas vezes a semântica implícita pelo eval do JavaScript seja favorecida.
+
+Apesar de ser baseado em JavaScript as estruturas utilizadas em JSON podem ser encontradas 
+nativamente nas principais linguagens de programação dinâmicas e implementações do \textit{parser}
+existem em praticamente todas linguagens de programação.
+
+A troca de dados entre sistemas usando JSON necessita de um acordo entre as partes envolvidas, e o JSON
+possui limitações como ser um subconjunto do JavaScript e não possuir nenhum mecanismo de extensão.
+Além disso não permite a entrada de comentários e a regra para vírgulas é restrita. O sistema de tipos 
+é relativamente pobre e a sintaxe não permite o uso em modo \textit{stream} de maneira fácil.
+
+\section{Outros Formatos}
+
+Existem também outros formatos de texto e binários com foco na troca de dados
+ou representação de arquivos de configuração. O FRED também foi influenciado 
+pelos formatos \textit{Amazon Ion, TOML, edn e YAML}, estes trazem vários conceitos 
+que evoluem os modelos JSON e XML.
+
+\begin{itemize}
+    \item \textbf{Amazon Ion}: Possui representação tanto em texto como binário. O formato de texto
+    é compátivel com JSON porém possui um modelo de dados com mais tipos, por exemplo blobs binários e
+    timestamp.
+    \item \textbf{TOML}: O formato TOML tem um foco em arquivos de configuração e em ser simples, 
+    entretanto o modelo de dados também é mais diverso que o do JSON com tipos para datas e binários 
+    por exemplo. TOML é bastante influenciado pelo formato INI, que é amplamente utilizado, apesar de não
+    possuir uma especificação formal.
+    \item \textbf{edn}: Este formato possui um modelo de dados rico e suporta um 
+    mecanismo de extensibilidade para indicar mais semântica aos dados, esta abstração possui 
+    alguma semelhança com o XML. Também suporta \textit{streaming} facilmente diferente de JSON.
+    Visto que vem da comunidade Clojure que é bastante focada em dados.
+    \item \textbf{YAML}: É um formato com um modelo de dados baseado em linguagens dinâmicas
+    como Perl, Ruby, Python. Tem o foco em ser fácil de ler por humanos e também possui suporte
+    para \textit{streaming}.
+\end{itemize}

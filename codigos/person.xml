@@ -1,0 +1,54 @@
+<person source="facebook">
+    <name>Richard</name>
+    <birth-date>1997-12-08</birth-date>
+    <age>21</age>
+    <accomplishments>
+        <value>High School</value>
+        <value>Chess champion</value>
+    </accomplishments>
+    <friends>
+        <person source="twitter">
+            <name>Lucas Bernardo</name>
+            <birth-date>1897-12-08</birth-date>
+            <age>121</age>
+            <accomplishments>
+                <value>Middle School</value>
+                <value>Soccer MVP</value>
+            </accomplishments>
+        </person>
+        <person source="facebook">
+            <name>Matheus</name>
+            <birth-date>1987-12-08</birth-date>
+            <age>31</age>
+            <accomplishments>
+                <value>PhD</value>
+                <value>Chess champion</value>
+            </accomplishments>
+        </person>
+        <person source="facebook">
+            <name>Joao</name>
+            <birth-date>1950-10-03</birth-date>
+            <age>50</age>
+            <accomplishments>
+                <value>Best Soccer Player at School</value>
+            </accomplishments>
+        </person>
+        <person source="orkut">
+            <name>Maria</name>
+            <birth-date>1998-12-08</birth-date>
+            <age>20</age>
+            <accomplishments>
+                <value>College Degree</value>
+            </accomplishments>
+        </person>
+        <person source="myspace">
+            <name>John</name>
+            <birth-date>2000-12-08</birth-date>
+            <age>19</age>
+            <accomplishments>
+                <value>High School</value>
+                <value>Checkers champion</value>
+            </accomplishments>
+        </person>
+    </friends>
+</person>
