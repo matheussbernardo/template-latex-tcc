@@ -3,7 +3,7 @@
 \section{Linguagens Formais}
 \label{sec:languages}
 
-Na maior parte das linguagens naturais (ex. português, inglês, etc)
+Na maior parte das linguagens naturais (ex. português, inglês, etc),
 letras, palavras e sentenças são entidades distintas.
 Também é verdade que existem agrupamentos, isto é, conjuntos de letras
 formam palavras e conjuntos de palavras formam sentenças. Contudo, 
@@ -19,21 +19,23 @@ como validar uma linguagem além de propor algoritmos específicos para realizar
 O formalismo também pressupõe que esta área não busca compreender a comunicação ou a interpretação 
 subjetiva de textos.
 
-Para definirmos uma linguagem de maneira formal, existem algumas abstrações.
-Símbolos são as unidades fundamentais e um conjunto de símbolos válidos é um alfabeto.
+Para definirmos uma linguagem de maneira formal, é necessário definir algumas abstrações.
+Uma destas são os Símbolos que são as unidades fundamentais de uma linguagem. Um conjunto
+de símbolos válidos é o chamado alfabeto. Uma sequência de símbolos é chamado \textit{string} 
+e um conjunto específico dessas \textit{strings} quando consideradas bem formadas definem uma linguagem. 
 
-Uma sequência de símbolos é chamado \textit{string} e um conjunto específico dessas \textit{strings} 
-consideradas bem formadas forma uma linguagem. Deste modo, podemos definir uma linguagem 
+Deste modo, podemos definir uma linguagem 
 como um conjunto contável de \textit{strings} que usa símbolos de um alfabeto especificado. 
 Usando essa definição o português é definido como o conjunto de todos os textos 
 válidos em português \cite{cohen1986}.
 
 Entretanto, esse conjunto é infinito e portanto para definir esta linguagem de maneira precisa
-é necessário utilizar as regras gramáticais e definir a linguagem de maneira
+é necessário utilizar as regras gramaticais e definir a linguagem de maneira
 generativa utilizando uma descrição finita de regras. 
 
-Utilizando essa estratégia frases em português que não fazem sentido, mas que estão gramaticalmente
-corretas. Por exemplo, "Os dinossauros tem sua ética definida na tangente do verbo", são válidas para
+Utilizando essa estratégia, frases em português que estão semanticamente erradas porém gramaticalmente
+corretas são consideradas válidas. Por exemplo, 
+"Os dinossauros tem sua ética definida na tangente do verbo", são válidas para
 a linguagem, visto que linguagens formais não estudam o significado dos textos.
 
 Para compor novas linguagens, a definição permite construir linguagens complexas a partir de
@@ -45,10 +47,10 @@ D o conjunto de dígitos de \textbf{0} a \textbf{9}. Podemos definir as operaç�
 linguagens da seguinte maneira:
 
 \begin{itemize} 
-    \item União entre linguagens é similar a operação em conjuntos, isto é a união de L e D significa
-    um novo conjunto composto pelas palavras da linguagem L mais os dígitos da linguagem D, isto é
+    \item A União entre linguagens é similar à operação em conjuntos, isto é a união de L e D significa
+    um novo conjunto composto pelas palavras da linguagem L mais os dígitos da linguagem D, isto é,
     o conjunto com \textbf{aa}, \textbf{bb} e os dígitos de \textbf{0} a \textbf{9}.
-    \item Concatenação de linguagens é uma operação similar ao produto cartesiano em conjuntos,
+    \item A Concatenação de linguagens é uma operação similar ao produto cartesiano em conjuntos,
     isto é, o novo conjunto é formado utilizando todas as palavras de L e combinando com as
     palavras da linguagem D. No caso as \textit{strings} da nova linguagem possuem três caracteres
     onde os dois primeiros pertencem ao alfabeto de L e o terceiro ao alfabeto de D, por exemplo
@@ -69,17 +71,17 @@ de reconhecer linguagens e transformar em representações para o uso do computa
 \section{Análise Léxica}
 
 O objetivo da análise léxica é ler uma sequência de caracteres como entrada, agrupar essa entrada em 
-\textit{strings} chamada lexemas e então produzir como saída um conjunto de 
+\textit{strings} chamadas lexemas e então produzir como saída um conjunto de 
 tokens para cada lexema construído. O analisador léxico também pode limpar espaços 
 em brancos, comentários e outros caracteres que podem ser ignorados da entrada \cite{aho2006}.
-
-Podemos fazer uma analogia com o português, os lexemas são as palavras da língua e os tokens são
-a classe gramatical.
 
 Um token é uma estrutura que possui um tipo, uma referência ao lexema e podem ter atributos como número de linha 
 e/ou coluna.
 O tipo do token é um símbolo abstrato que representa uma unidade léxica, isto é, uma  palavra chave ou
-uma sequência de caracteres que definem um identificador e o valor é algum atributo associado aquele token.
+uma sequência de caracteres que definem um identificador e o valor é algum atributo associado àquele token.
+
+Podemos fazer uma analogia com o português, os lexemas são as palavras da língua e os tokens são
+a classe gramatical.
 
 Outro conceito importante é o padrão de formação, este é uma descrição da forma em que lexemas de
 um token podem ocorrer na entrada. Portanto, para construir um lexema é necessário 
@@ -88,7 +90,7 @@ Por exemplo, um token que representa números inteiros pode corresponder a um pa
 qualquer sequência de dígitos em um único lexema.
 
 Para construir um analisador léxico é necessário portanto especificar os padrões de formação para cada token. 
-Isto é descrever como devem ser os lexemas para cada token. Esse padrão é comumente especificado 
+Isto é, descrever como devem ser os lexemas para cada token. Esse padrão é comumente especificado 
 utilizando expressões regulares.
 
 \subsection{Expressões Regulares}
@@ -96,7 +98,7 @@ utilizando expressões regulares.
 Expressões regulares são uma notação utilizada para descrever um tipo específico de linguagem, as linguagens regulares.
 Linguagens regulares usam as operações descritas em \ref{sec:languages} e associam uma sintaxe
 específica a cada uma destas três operações. As implementações encontradas na maioria das linguagens de programação
-são baseadas na sintaxe proposta pelo Perl e em alguns casos adicionam extensões não regulares a 
+são baseadas na sintaxe proposta pelo Perl e em alguns casos adicionam extensões não regulares à
 linguagem.
 
 Essas expressões são construídas recursivamente a partir de expressões menores. 
@@ -121,7 +123,7 @@ são representadas pela seguinte notação:
 
 Por exemplo, dado que \textit{l} representa todas as letras e o \textit{underscore} 
 aceitas pela linguagem C e que \textit{d} representa todos as os dígitos aceitos 
-pela linguagem C então os identificadores da linguagem C podem ser descritos utilizando 
+pela linguagem C, então os identificadores da linguagem C podem ser descritos utilizando 
 a expressão regular:
 
 \begin{center}
@@ -137,7 +139,7 @@ A análise léxica lê vários caracteres da entrada e os agrupa em uma sequênc
 tokens não necessariamente define uma entrada válida e portanto é importante ter alguma maneira de
 validar a sintaxe dessa entrada.
 
-A análise sintática é o processo onde é verificado a sintaxe da entrada. 
+A análise sintática é o processo onde é verificada a sintaxe da entrada. 
 Para fazer essa verificação são utilizadas regras precisas que especificam 
 uma estrutura sintática válida \cite{aho2006}.
 
@@ -149,14 +151,14 @@ Mais formalmente, uma gramática livre de contexto consiste em quatro partes. Se
 o conjunto dos terminais, o conjunto dos não terminais, o símbolo inicial e as produções.
 
 \begin{description}
-    \item[Terminais] São os símbolos básicos que formam a sequência de 
+    \item[Terminais:] São os símbolos básicos que formam a sequência de 
     caracteres da entrada. O analisador léxico retorna tokens que possuem terminais. 
-    \item [Não Terminais] Chamados de variáveis sintáticas denotam conjuntos 
+    \item [Não Terminais:] Chamados de variáveis sintáticas denotam conjuntos 
     de sequências de caracteres. Também impõe uma estrutura hierárquica na linguagem.
-    \item[Símbolo Inicial] Diferencia um não terminal para ser considerado 
-    como inicial na interpretação da gramática. Corresponde a raiz da árvore sintática
+    \item[Símbolo Inicial:] Diferencia um não terminal para ser considerado 
+    como inicial na interpretação da gramática. Corresponde à raiz da árvore sintática
     resultante.
-    \item[Produção] Declara a maneira como os terminais e não terminais 
+    \item[Produção:] Declara a maneira como os terminais e não terminais 
     podem ser combinados para formar uma entrada válida. É dividido em três partes,
     como em a : $\beta$, o lado esquerdo que possui um não terminal, e o lado direito 
     ou corpo da produção que, consiste de zero ou mais terminais e/ou não terminais e especifica
@@ -173,7 +175,7 @@ expressões aritméticas simples. Os não terminais são: expr, term e factor.
 Os terminais são: "+", "-", "*", "/", "(", ")" e ID (representa um identifador que é definido usando
 uma expressão regular). Por fim, o símbolo inicial é expr.
 
-\begin{lstlisting}[caption=Exemplo de gramática livre do context que descreve expressões
+\begin{lstlisting}[caption=Exemplo de gramática livre do contexto que descreve expressões
     aritméticas como (20 + 1) * 2.,label={lst:grammar}]
 expr : expr "+" term 
      | expr "-" term
@@ -218,7 +220,7 @@ pode-se dizer que essa árvore também representa a entrada.
 \end{figure}
 
 Utilizando a gramática especificada no Código \ref{lst:grammar}, porém com uma pequena alteração
-onde os não terminais são representados apenas pelas suas primeiras letras, teríamos \ref{fig:parsetree}. 
+onde os não terminais são representados apenas pelas suas primeiras letras, teríamos a Fig. \ref{fig:parsetree}. 
 Essa árvore equivale à derivação a seguir:
 
 \begin{center}
@@ -227,16 +229,17 @@ Essa árvore equivale à derivação a seguir:
 
 Existem três tipos genéricos de \textit{parsers} para gramáticas livre de contexto: 
 universal, \textit{top-down} e \textit{bottom-up}. Os métodos de \textit{parsing}
-universais podem analisar qualquer gramática. Porém, muitas vezes exponenciais, por exemplo o algoritmo Earley,
+universais podem analisar qualquer gramática. Porém, muitas vezes sua complexidade é exponencial, por exemplo o algoritmo Earley,
 um dos mais eficientes nesta categoria, tem no pior caso complexidade assintótica O($n^3$).
 
-Normalmente os métodos mais utilizados são  \textit{top-down} ou \textit{bottom-up}. Onde no primeiro
+Normalmente os métodos mais utilizados são  \textit{top-down} ou \textit{bottom-up}. Onde, no primeiro,
 a \textit{parse tree} é construída a partir do topo, da raiz até as folhas. E no segundo é o inverso,
 das folhas até a raiz. 
 
 Vale ressaltar que os analisadores mais eficientes tanto \textit{top-down} ou \textit{bottom-up}  
 só funcionam para subclasses de gramáticas livres do contexto. Este documento foca nos analisadores
-do tipo \textit{top-down}.
+do tipo \textit{top-down}. Visto que, um dos os objetivos do projeto é definir um formato de fácil construção
+utilizando técnicas \textit{top-down}.
 
 \subsection{Analisadores \textit{Top-Down}}
 
@@ -244,11 +247,11 @@ A construção de analisadores do tipo \textit{top-down} é como o processo de
 construir a \textit{parse tree} a partir do topo e isto é
 equivalente a encontrar a derivação mais à esquerda para a entrada \cite{aho2006}.
 
-Para exemplificar considere a gramática descrita no Código \ref{lst:grammartopdown}. Esta
+Para exemplificar, considere a gramática descrita no Código \ref{lst:grammartopdown}. Esta
 representa uma linguagem para expressões aritméticas parecida com a definida no 
 Código \ref{lst:grammar}, porém sofreu mudanças para adequar ao processo de \textit{parsing top-down}.
 
-Uma dessas mudanças foi retirar recursões a esquerda da gramática, pois esta leva a
+Uma dessas mudanças foi retirar recursões à esquerda da gramática, pois esta leva a
 problemas durante a análise \cite{aho2006}.
 
 \begin{lstlisting}[caption=Exemplo de gramática para analisadores top-down onde o símbolo epsilon representa uma produção vazia.,label={lst:grammartopdown}]
@@ -338,8 +341,8 @@ def whitespace(tokens):
 
 Um exemplo de combinador pode ser o sequenciamento, isto é aplicar um parser após o outro. 
 Em gramática livre do contexto a notação para uma sequência é apenas colocar um 
-item ao lado do outro na produção. O código em pseudo-python para representar
-esse combinador está em \ref{lst:seqcomb}.
+item ao lado do outro na produção. O código para representar
+esse combinador está no Código \ref{lst:seqcomb}.
 
 \begin{lstlisting}[caption=Exemplo de combinador em pseudo-python,label={lst:seqcomb}]
 def seq(parser1, parser2):
@@ -379,13 +382,13 @@ A definição de FIRST(A), onde A é qualquer sequência de símbolos da gramát
 sequências derivadas a partir de A. 
 De maneira genérica, dado uma derivação A $\Rightarrow$ ... $\Rightarrow$ cy onde c é um terminal, logo
 c pertence ao conjunto FIRST(A).
-Por exemplo utilizando a gramática \ref{lst:grammartopdown}, o FIRST(F) é o conjunto com
+Por exemplo utilizando a gramática definida no Código \ref{lst:grammartopdown}, o FIRST(F) é o conjunto com
 dois terminais \textbf{(} e \textbf{ID}. Como F não deriva string vazia o FIRST(T) e FIRST(E) são iguais.
 
 A definição de FOLLOW(A) é o conjunto de terminais x que podem aparecer imediatamente
 à direita de um não terminal A. Isto é, o conjunto de terminais x em derivações na forma 
 S $\Rightarrow$ ... $\Rightarrow$ wAxy onde w e y podem ser qualquer sequência de símbolos.
-Por exemplo utilizando a gramática \ref{lst:grammartopdown}, O FOLLOW(E) é composto pelo terminal \textbf{)}.
+Por exemplo utilizando a gramática definida no Código \ref{lst:grammartopdown}, o FOLLOW(E) é composto pelo terminal \textbf{)}.
 
 \begin{table}[h]
     \centering
@@ -407,5 +410,8 @@ Por exemplo utilizando a gramática \ref{lst:grammartopdown}, O FOLLOW(E) é com
     \end{tabular}
 \end{table}
 
-Um exemplo de tabela preditiva pode ser visto em \ref{tbl:predictive}, os números referenciam as linhas 
+Um exemplo de tabela preditiva pode ser visto na Tabela \ref{tbl:predictive}, os números referenciam as linhas 
 do Código \ref{lst:grammartopdown} onde estão as produções.
+
+Neste capítulo foi discutida a fundamentação teórica necessária para entender como um computador pode
+interpretar uma linguagem. O próximo capítulo discute vários formatos utilizados para serialização de dados.

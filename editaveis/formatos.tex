@@ -4,8 +4,8 @@ No capítulo anterior, foram discutidas maneiras para transformar um texto
 em uma representação computacional. Para tal, foram definidas algumas abstrações
 como linguagens, gramáticas e \textit{parsers}.
 
-Como dito no Cap. \ref{sec:objective} o objetivo deste trabalho é definir
-uma representação para troca de dados. Portanto é essencial discutir outras
+Como dito na Seção \ref{sec:objective} o objetivo deste trabalho é definir
+uma representação para troca de dados. Portanto, é essencial discutir outras
 notações existentes. Especialmente XML (Extensible Markup Language) e 
 JSON (JavaScript Object Notation).
 
@@ -20,9 +20,10 @@ Isto significa que a especificação foi pensada como uma analogia ao ato de mar
 Como por exemplo em um processo de revisão.
 
 A abstração principal é o chamado elemento e um documento XML contém um ou mais elementos. 
-Um elemento consiste de tags de início e fim ou no caso de um elemento vazio 
-consiste de um \textit{empty-element tag}. Esses elementos delimitam uma marcação
-em um texto e possuem um tipo definido pelo seu nome além de permitirem a presença de atributos. 
+Um elemento consiste de tags, que são textos no formato \textbf{<...> ou </...>}, tanto de
+início e fim ou no caso de um elemento vazio consiste de um \textit{empty-element tag}, que 
+tem o formato \textbf{<... />}. Esses elementos delimitam uma marcação em um texto e 
+possuem um tipo definido pelo seu nome além de permitirem a presença de atributos. 
 
 \begin{lstlisting}[caption=Exemplo de elementos XML,label={lst:xmlelement}]
 <termdef id="dt-dog" term="dog">duke</termdef>
@@ -39,7 +40,7 @@ carregada e existe uma ambiguidade no uso de atributos e filhos. Além disso o t
 
 JSON é uma notação em formato de texto, mais nova que o XML, criada para facilitar a troca de 
 dados de um servidor com o navegador web. Foi baseada na linguagem JavaScript (ECMAScript) e formalizada 
-pela \citeonline{ecma404} após a proposta inicial do Douglas Crawford.
+pela \citeonline{ecma404} após a proposta inicial do Douglas Crawford encontrada em \citeonline{rfc4627}.
 Tem o objetivo de ser fácil de ler e escrever e também ser fácil para máquinas interpretar e gerar.
 
 Um valor JSON pode ser do tipo \textit{object}, \textit{array}, \textit{number}, \textit{string}, 
@@ -74,7 +75,9 @@ existem em praticamente todas linguagens de programação.
 A troca de dados entre sistemas usando JSON necessita de um acordo entre as partes envolvidas, e o JSON
 possui limitações como ser um subconjunto do JavaScript e não possuir nenhum mecanismo de extensão.
 Além disso não permite a entrada de comentários e a regra para vírgulas é restrita. O sistema de tipos 
-é relativamente pobre e a sintaxe não permite o uso em modo \textit{stream} de maneira fácil.
+é relativamente pobre e a sintaxe não permite o uso em modo \textit{stream} de maneira fácil. Por exemplo,
+dado um arquivo JSON muito grande o ideal é utilizar esse arquivo como uma \textit{stream} de dados e não colocar 
+ele todo em memória. Entretanto, devido a notação de objetos e listas isto se torna mais custoso em JSON.
 
 \section{Outros Formatos}
 
@@ -85,17 +88,17 @@ que evoluem os modelos JSON e XML.
 
 \begin{itemize}
     \item \textbf{Amazon Ion}: Possui representação tanto em texto como binário. O formato de texto
-    é compátivel com JSON porém possui um modelo de dados com mais tipos, por exemplo blobs binários e
-    timestamp.
+    é compátivel com JSON porém possui um modelo de dados com mais tipos, por exemplo blobs binários (arquivos
+    binários grandes que podem ser codificados para algum formato de texto), data e hora \cite{amznion}.
     \item \textbf{TOML}: O formato TOML tem um foco em arquivos de configuração e em ser simples, 
     entretanto o modelo de dados também é mais diverso que o do JSON com tipos para datas e binários 
     por exemplo. TOML é bastante influenciado pelo formato INI, que é amplamente utilizado, apesar de não
-    possuir uma especificação formal.
+    possuir uma especificação formal \cite{toml}.
     \item \textbf{edn}: Este formato possui um modelo de dados rico e suporta um 
     mecanismo de extensibilidade para indicar mais semântica aos dados, esta abstração possui 
     alguma semelhança com o XML. Também suporta \textit{streaming} facilmente diferente de JSON.
-    Visto que vem da comunidade Clojure que é bastante focada em dados.
+    Visto que vem da comunidade Clojure que é bastante focada em dados \cite{edn}.
     \item \textbf{YAML}: É um formato com um modelo de dados baseado em linguagens dinâmicas
     como Perl, Ruby, Python. Tem o foco em ser fácil de ler por humanos e também possui suporte
-    para \textit{streaming}.
+    para \textit{streaming} \cite{yaml}.
 \end{itemize}

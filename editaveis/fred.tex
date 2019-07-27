@@ -1,14 +1,14 @@
-\chapter[Metodologia]{Metodologia}
+\chapter[FRED]{FRED}
 
-Este capítulo discute como o projeto será desenvolvido, especificamente
+Este capítulo discute como o projeto foi desenvolvido, especificamente
 para cumprir com os objetivos definidos na Seção \ref{sec:objective}. Para esse fim
 foi definido um escopo para o projeto, que consiste na especificação da linguagem FRED e 
-como serão feitas as implementações e a coleta de resultados.
+como foram feitas as implementações e a coleta de resultados.
 
 \section{Especificação do FRED}
 \label{sec:solution}
 
-A solução a ser construída consiste em implementar a linguagem FRED (Flexible REpresentation of Data).
+A solução construída consistiu em implementar a linguagem FRED (Flexible REpresentation of Data).
 Portanto é necessário antes definir esta linguagem, tanto do ponto de vista de sintaxe como de modelo de dados.
 
 O FRED é uma notação criada para a troca de dados. Os
@@ -31,17 +31,37 @@ em FRED são consideradas espaço em branco e isso permite por exemplo escrever 
 e arrays com maior facilidade. Também permite dentro dos objetos escrever as chaves sem
 aspas.
 
+A linguagem FRED foi construída pensando tanto na facilidade para ler e escrever, como na
+simplicidade para construir \textit{parsers}. Também possui abstrações que permitem incluir
+mais significado semântico aos dados e, no futuro, incluir sistemas de validação e conversão
+automática de tipo. 
+
+O FRED foi desenvolvido pensando em alguns casos de uso. Inicialmente a linguagem
+tem o uso principal para troca de dados, comunicação entre sistemas e
+outras formas de representação de dados que devem ser legíveis para seres humanos
+como arquivos de configuração.
+
+Outro uso interessante é a facilidade de representar árvores sintáticas em FRED.
+Pois, devido as tags \textit{union types} são facilmente representadas 
+e portanto construir uma árvore sintática fica simples como no exemplo
+\textbf{Mul [\$x, Add [40, 2]]}.
+
+Essa representação possui vantagens em relação as \textit{S-expressions}, que
+é uma notação utilizada para representar listas aninhadas e árvores, popular em linguagens da família 
+LISP. Visto que, o papel do nó da árvore é destacado e possui um local natural para a 
+inclusão de meta-informação.
+
 \subsection{Comentários e Espaço em branco}
 
 Comentários são permitidos em FRED e utilizam o caractere \textbf{;}. É ignorada
 toda a linha depois do caractere até a quebra de linha. Em FRED a regra de 
-espaço em branco é parecido com JSON exceto que o caractere vírgula também
+espaço em branco é parecida com JSON exceto que o caractere vírgula também
 é considerado espaço em branco.
 
 \subsection{\textit{Null} e Booleanos}
 
 Os valores atômicos são iguais ao JSON e possuem a mesma semântica.
-Estão representados na gramática \ref{lst:nullboolgrammar}, onde algumas produções
+Estão representados na gramática definida no Código \ref{lst:nullboolgrammar}, onde algumas produções
 foram omitidas para facilitar a leitura.
 
 \begin{lstlisting}[caption=Gramática para bools e null,label={lst:nullboolgrammar}]
@@ -63,8 +83,8 @@ que são:
 \end{center}
 
 Diferentemente do JSON, existe uma notação para adicionar \textit{code points} unicode com 
-dois ou oito hexadecimais. A gramática em \ref{lst:stringgrammar} e utiliza expressões
-regulares.
+dois ou oito hexadecimais. A gramática está especificada no Código \ref{lst:stringgrammar} e 
+utiliza expressões regulares.
 
 \begin{lstlisting}[caption=Gramática para strings,label={lst:stringgrammar}]
 string : STRING_LITERAL
@@ -81,7 +101,7 @@ entrar números em diferentes bases (binário, octal, hexadecimal). Exemplo de i
 são \textbf{42, -42, 1\_000\_000, 0xBEEF\_00E9, 0o7823, 0b1010} e exemplos de números do tipo
 float são \textbf{42.12, -42.12, 4.32e-19, -2E-2}.
 
-A gramática que especifica estes tipos está em \ref{lst:numbergrammar}. As definições das
+A gramática que especifica estes tipos está no Código \ref{lst:numbergrammar}. As definições das
 expressões regulares foram omitidas.
 
 \begin{lstlisting}[caption=Gramática para números,label={lst:numbergrammar}]
@@ -93,7 +113,7 @@ number : NUMBER_LITERAL
 
 \subsection{Data e Hora}
 
-Um tipo que não existe em JSON mas está definido na especificação do FRED são os \textit{DateTime}.
+Um tipo que não existe em JSON mas que está definido na especificação do FRED é o \textit{DateTime}.
 Isto é, Datas e Horas podem ser representadas em FRED. Utilizando uma notação parecida com
 a RFC 3339.
 
@@ -104,7 +124,7 @@ Datas com Horas podem ser representadas com seguinte notação \textbf{YYYY-MM-D
 \textbf{YYYY-MM-DDTHH:MM:SS.SS+-HH:MM}, onde o fuso é opcional e \textbf{T} pode ser 
 substituido por \textbf{\_}.
 
-A gramática para estes tipos está exposta em \ref{lst:dategrammar}.
+A gramática para estes tipos está exposta no Código \ref{lst:dategrammar}.
 
 \begin{lstlisting}[caption=Gramática para datas e horas,label={lst:dategrammar}]
 atom : date_time 
@@ -120,7 +140,7 @@ date : DATE_FORMAT [ ("_" | "T") TIME_FORMAT [TIME_OFFSET]]
 
 Outro tipo de dado que não tem especificação em JSON porém tem em FRED são os blobs binários. Eles
 representam dados binários codificados de alguma forma. A notação é similar a uma string precedida
-por um , como em \ref{lst:blobgrammar}.
+por um , como no Código \ref{lst:blobgrammar}.
 
 \begin{lstlisting}[caption=Gramática para blobs,label={lst:blobgrammar}]
 atom : blob
@@ -134,9 +154,9 @@ blob : "#" BLOB_LITERAL
 presentes nos modelos de dados das linguagens do tipo Lisp e em Ruby. 
 Eles podem ser representados em FRED usando o caracter \textbf{\$}. Por Exemplo, \textbf{\$var1}.
 
-A gramática que especifica esse tipo está em \ref{lst:symbolgrammar}.
+A gramática que especifica esse tipo está no Código \ref{lst:symbolgrammar}.
 
-\begin{lstlisting}[caption=Gramática para symbols,label={lst:symbolgrammar}]
+\begin{lstlisting}[float,floatplacement=H,caption=Gramática para symbols,label={lst:symbolgrammar}]
 atom : symbol
 
 symbol : "$" name
@@ -146,9 +166,10 @@ symbol : "$" name
 
 A linguagem FRED também permite a representação de listas e/ou arrays, utilizando uma notação parecida com JSON.
 Por exemplo, \textbf{[1 2 3]}. Vale notar que o separador é pelo menos um espaço e que vírgulas em FRED
-são consideradas espaço em branco. Logo, listas também podem ser escritas desta forma \textbf{[1, 2, 3]}.
+são consideradas espaço em branco. Logo, listas também podem ser escritas desta forma \textbf{[1, 2, 3]} ou 
+até mesmo de maneira misturada como em \textbf{[1, 2 3]}.
 
-A gramática que define esse tipo está em \ref{lst:listgrammar}.
+A gramática que define esse tipo está no Código \ref{lst:listgrammar}.
 
 \begin{lstlisting}[caption=Gramática para listas,label={lst:listgrammar}]
 atom : array
@@ -159,7 +180,7 @@ array : "[" value* "]"
 \subsection{Objetos}
 
 Também é possível representar objetos em FRED. A sintaxe é muito parecida com JSON. 
-Exemplo de dicionário em FRED em \ref{lst:fredobj}. Basicamente é um conjunto de pares 
+Exemplo de dicionário em FRED pode ser visto no Código \ref{lst:fredobj}. Basicamente é um conjunto de pares 
 chave e valor separados por pelo menos um espaço.
 
 \begin{lstlisting}[caption=Exemplo de dicionário em FRED chaves com espaços são escapados com backticks,label={lst:fredobj}]
@@ -169,7 +190,7 @@ chave e valor separados por pelo menos um espaço.
 }
 \end{lstlisting}
 
-A gramática que define o tipo objeto está em \ref{lst:objgrammar}.
+A gramática que define o tipo objeto está no Código \ref{lst:objgrammar}.
 
 \begin{lstlisting}[caption=Gramática para objetos,label={lst:objgrammar}]
 atom : object
@@ -177,6 +198,9 @@ atom : object
 object : "{" pair* "}"
 
 pair : name ":" value
+
+name : VARIABLE
+     | QUOTED_VARIABLE
 \end{lstlisting}
     
 \subsection{Tags e Metadados}
@@ -192,7 +216,7 @@ person {
 \end{lstlisting}
     
 As \textit{tags} são uma maneira de indicar significados específicos para os valores em FRED. Isto permite
-mecanismos de extensão do modelo de dados base. No exemplo \ref{lst:fredtagobj} 
+mecanismos de extensão do modelo de dados base. No Código \ref{lst:fredtagobj} 
 temos um objeto com tag em FRED.
 
 Valores com tag em FRED podem ser associados a metadados. A sintaxe consiste em entrar 
@@ -203,7 +227,7 @@ Também é possível representar tags e metadados sem estar associado a nenhum e
 Por exemplo: \textbf{(tag attr=1)}. Isto é semanticamente igual a uma tag associada ao valor null
 e corresponde às \textit{empty tags} do XML.
 
-A gramática que define a sintaxe das Tags está em \ref{lst:taggrammar}.
+A gramática que define a sintaxe das Tags está no Código \ref{lst:taggrammar}.
 
 \begin{lstlisting}[caption=Gramática para tags e metadados,label={lst:taggrammar}]
 value : tagged
@@ -220,12 +244,12 @@ attr : name "=" atom
 \subsection{Suporte para \textit{Streaming} e \textit{Append Only}}
 
 FRED possui suporte para \textit{streaming}, isto é funciona em 
-arquivos em \textit{stream mode}. Em \ref{lst:fredstream} está
-um exemplo de documento FRED para \textit{streaming}. Isto permite
-utilizar documentos fred em modo \textit{append only}, o que é muito útil
+arquivos grandes que não são lidos inteiramente em memória mas sim como um fluxo de dados. 
+No Código \ref{lst:fredstream} está um exemplo de documento FRED para \textit{streaming}. Isto permite
+utilizar documentos FRED em modo \textit{append only}, o que é muito útil
 para \textit{logs} e em várias aplicações onde os dados são tratados como imutáveis.
 
-\begin{lstlisting}[caption=Exemplo de documento com streaming em FRED,label={lst:fredstream}]
+\begin{lstlisting}[float,floatplacement=H,caption=Exemplo de documento com streaming em FRED,label={lst:fredstream}]
 ---
 person "Jhon"
 ---
@@ -235,7 +259,7 @@ person "James"
 ---
 \end{lstlisting}
 
-A gramática para suportar \textit{streaming} está em \ref{lst:streamgrammar}.
+A gramática para suportar \textit{streaming} está no Código \ref{lst:streamgrammar}.
 
 \begin{lstlisting}[caption=Gramática para streaming,label={lst:streamgrammar}]
 document : stream
@@ -251,17 +275,20 @@ Ela foi desenvolvida de forma a ser fácil de criar \textit{parsers} usando téc
 simples como o LL(1) e descida recursiva. Entretando, isto não significa que as implementações
 devam utilizar estas técnicas.
 
+No Apêndice \ref{sec:fredtrain} a gramática especificada pode ser visualizada
+por meio de diagramas de sintaxe.
+
 Toda essa especificação está divulgada de maneira aberta no 
 endereço \url{https://github.com/fred-format/fred}.
  
 \section{Atividades do Projeto de Implementação}
 
 Com a especificação formal da linguagem FRED, é necessário 
-descrever o escopo do projeto de implementação. As implementações serão feitas 
-em duas linguagens: Haskell e JavaScript. Também discutiremos
+descrever o escopo do projeto de implementação. As implementações foram feitas 
+em duas linguagens: Haskell e JavaScript. Também foi discutido
 a linguagem FRED e como ela se relaciona com outros formatos.
 
-As atividades a serem feitas nesse projeto são:
+As atividades que foram feitas nesse projeto são:
 
 \begin{itemize}
     \item Implementação do FRED em Haskell
@@ -280,9 +307,9 @@ As atividades a serem feitas nesse projeto são:
     \end{itemize}
 \end{itemize}
 
-A implementação da linguagem será desenvolvida acompanhada de uma suíte de testes 
+A implementação da linguagem foi desenvolvida acompanhada de uma suíte de testes 
 para garantir que as implementações de FRED estão conforme a especificação.
-As atividades a serem feitas nessa etapa são:
+As atividades que foram feitas nessa etapa são:
 
 \begin{itemize}
     \item Estudar como construir testes agnósticos à linguagens de programação.
@@ -290,11 +317,9 @@ As atividades a serem feitas nessa etapa são:
     \item Documentar a suíte de testes.
 \end{itemize}
 
-Por fim faremos uma análise simples da linguagem FRED baseada em algumas métricas
-de performance. Essa análise consiste 
-em uma discussão sobre a linguagem e também será feito alguma comparação
-com linguagens semelhantes a partir de métricasdefinidas.
+Por fim foi feito uma análise simples da linguagem FRED baseada em algumas métricas
+de memória. Essa análise consiste de uma comparação com linguagens semelhantes a 
+partir de métricas definidas.
 
-As  atividades desenvolvidas nessa etapa são discutir as
-características diferenciais da linguagem FRED e coletar dados e 
+As  atividades desenvolvidas nessa etapa desenvolvidas foram coletar dados e 
 comparar FRED com linguagens semelhantes.

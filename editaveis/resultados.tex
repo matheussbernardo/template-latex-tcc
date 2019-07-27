@@ -33,7 +33,7 @@ Código \ref{lst:valuehaskell}.
 O tipo dessa função mostra que ela retorna um \textbf{FredValue}. 
 Este tipo representa um valor FRED em Haskell utilizando um 
 \textit{Union Type} definido no módulo \textbf{Value.hs} 
-mostrado no código \ref{lst:fredvaluehaskell}.
+mostrado no Código \ref{lst:fredvaluehaskell}.
 
 \begin{lstlisting}[caption=Definição do tipo FredValue,label={lst:fredvaluehaskell}]
 data FredValue =
@@ -46,7 +46,7 @@ representações na mesma memória, por exemplo um dado que pode ser inteiro ou 
 
 Um \textbf{FredValue} sempre é associado à um \textbf{FredAtom}. Este
 define os tipos que a linguagem FRED possui e está definido no módulo \textbf{Value.hs}
-mostrado no código \ref{lst:fredatomhaskell}
+mostrado no Código \ref{lst:fredatomhaskell}
 
 \begin{lstlisting}[caption=Definição do tipo FredAtom,label={lst:fredatomhaskell}]
 data FredAtom =
@@ -83,13 +83,15 @@ O projeto está dividido em 5 arquivos principais.
 \end{itemize}
 
 A implementação do FRED em Haskell está atualmente disponível como \textit{package candidate} no 
-\textit{Hackage\footnote{Gerenciador de pacotes da comunidade Haskell}} e foi documentada utilizando 
+\textit{Hackage\footnote{Gerenciador de pacotes da comunidade Haskell}} e pode ser encontrada
+em \url{https://hackage.haskell.org/package/fred-haskell-0.1.1.1/candidate}. O pacte foi documentado utilizando 
 \textit{Haddock\footnote{Ferramenta para gerar documentação de códigos Haskell}}.
 
 O processo para distribuir a biblioteca começou com um pedido para criar uma conta no Hackage 
 e após isso uma confirmação, feita por um humano, do interesse de publicar e manter a biblioteca.
 O procedimento recomendado foi publicar a biblioteca primeiro no repositório para pacotes candidatos
-e o avaliador também passou as melhores práticas utilizadas pela comunidade para publicação de pacotes.
+e o avaliador também passou as melhores práticas utilizadas pela comunidade para publicação de pacotes,
+por exemplo, a forma de versionamento utilizado pela comunidade.
 
 \section{Implementação do FRED em JavaScript}
 
@@ -164,7 +166,8 @@ em \ref{fig:filetreejs}.
 	\label{fig:filetreejs}
 \end{figure}
 
-Essa implementação está publicada no npm\footnote{Node Package Manager} e possui uma
+Essa implementação está publicada no npm\footnote{Node Package Manager}
+e pode ser encontrada em \url{https://www.npmjs.com/package/fred-js}. Também possui uma
 documentação simples no seu README.
 
 \section{Suíte de Testes do FRED}
@@ -207,7 +210,7 @@ representa o valor do metadado FRED.
 Exemplo de documento FRED e respectiva representação em JSON, nos códigos \ref{lst:testfred}
 e \ref{lst:testjson}.
 
-\begin{lstlisting}[caption=Exemplo de FRED ,label={lst:testfred}]
+\begin{lstlisting}[float,floatplacement=H,caption=Exemplo de FRED ,label={lst:testfred}]
 Person (source=facebook) {
     name : "Richard"
     birth-date : 1997-12-08T12:32:45Z
@@ -261,31 +264,11 @@ um algoritmo parecido.
 A suíte de testes está descrita no 
 repositório \url{https://github.com/fred-format/fred-test}
 
-\section{Análise de performance}
+\section{Análise de uso de memória}
 
-A linguagem FRED foi construída pensando tanto na facilidade para ler e escrever, como na
-simplicidade para construir \textit{parsers}. Também possui abstrações que permitem incluir
-mais significado semântico aos dados e, no futuro, incluir sistemas de validação e conversão
-automática de tipo. 
-
-O FRED foi desenvolvido pensando em alguns casos de uso. Inicialmente a linguagem
-tem o uso principal para troca de dados, comunicação entre sistemas e
-outras formas de representação de dados que devem ser legíveis para seres humanos
-como arquivos de configuração.
-
-Outro uso interessante é a facilidade de representar árvores sintáticas em FRED.
-Pois, devido as tags \textit{union types} são facilmente representadas 
-e portanto construir uma árvore sintática fica simples como no exemplo
-\textbf{Mul [\$x, Add [40, 2]]}.
-
-Essa representação possui vantagens em relação as \textit{S-expressions}, que
-é uma notação utilizada para representar listas aninhadas e árvores, popular em linguagens da família 
-LISP. Visto que, o papel do nó da árvore é destacado e possui um local natural para a 
-inclusão de meta-informação.
-
-Essa seção discute as principais características de performance da linguagem. E também como ela 
+Essa seção discute o uso de memória da linguagem. E também como ela 
 se relaciona com outros formatos, especialmente JSON e XML. É difícil avaliar 
-aspectos subjetivos como legibilidade e precisão. Por isso vamos focar em uma métricas fácil de 
+aspectos subjetivos como legibilidade e precisão. Por isso vamos focar em uma métrica fácil de 
 analisar que é o tamanho dos documentos, além disso essa medida é fundamental em sistemas 
 que se comunicam por uma rede distribuída para diminuir a latência de comunicação.
 
@@ -321,9 +304,9 @@ metodologia:
 Retirar as métricas em arquivos comprimidos é importante, pois o tráfego de dados feito
 com o protocolo HTTP é normalmente comprimido.
 
-Para o primeiro cenário foi analisado as lingugens XML, JSON e FRED quando representando dados
+Para o primeiro cenário foi analisado as linguagens XML, JSON e FRED  quando representando dados
 utilizados em comunicação entre sistemas. Foi criado um cenário onde é representado 
-uma pessoa em uma rede social. Como no exemplo \ref{lst:personexfred}.
+uma pessoa em uma rede social. Como no Código \ref{lst:personexfred}.
 
 \begin{lstlisting}[caption=Exemplo de dado sobre uma pessoa ,label={lst:personexfred}]
 Person (source=facebook) {
@@ -362,13 +345,15 @@ na Tabela \ref{tbl:persondocs}.
 O documento puro significa o texto identado e com todos os espaços em branco.
 O minificado passou por um processo de retirar caracteres desnecessários visando
 diminuir o tamanho do arquivo. Por fim a compressão foi feita usando duas técnicas
-Zip e Brotli. 
+Zip e Brotli.  As porcentagens na primeira linha significam o tamnho relativo ao
+FRED e assim subsequentemente nas outras linhas. Já a porcentagem na primeira coluna
+é referente ao FRED puro.
 
 Para o segundo cenário, está sendo representado um arquivo HTML. Com isto, podemos avaliar
 como as linguagens comportam-se em relação a marcação de texto. Para tal,
-foi utilizado no FRED uma notação parecida com o exemplo \ref{lst:divexfred}.
+foi utilizado no FRED uma notação parecida com o exemplo exposto no Código \ref{lst:divexfred}.
 
-\begin{lstlisting}[caption=Exemplo de dado representando HTML,label={lst:divexfred}]
+\begin{lstlisting}[float,floatplacement=H,caption=Exemplo de dado representando HTML,label={lst:divexfred}]
 div (class="card") [
     h1 "Card h1"
     h2 "Card h2"
@@ -407,7 +392,7 @@ de como representar HTML em JSON.
 
 Por fim, foi desenvolvido um cenário que abrange documentos provavelmente
 lidos e escritos por humanos, no caso arquivos de configuração. Para o 
-FRED foi utilizado a notação como em \ref{lst:packageexfred}.
+FRED foi utilizado a notação descrita no Código \ref{lst:packageexfred}.
 
 \begin{lstlisting}[caption=Exemplo de documento para arquivo de configuração ,label={lst:packageexfred}]
 {
@@ -447,6 +432,9 @@ Os resultados estão na Tabela \ref{tbl:packagedocs}.
 Zip e Brotli. Visto que o \textit{header} do Zip parece ser bem maior que o de 
 Brotli.
 
-A linguagem FRED foi mais compacta em todos os casos e talvez seja mais legível, entretanto
+Neste Capítulo são mostrados os insumos que foram feitos para alcançar os objetivos do Projeto. 
+Portanto, as implementações e a análise da linguagem foram realizadas com sucesso. 
+
+Mais especficamente, a linguagem FRED foi mais compacta em todos os casos e talvez seja mais legível, entretanto
 como exposto anteriormente é difícil retirar métricas sobre características subjetivas 
 de linguagens.
